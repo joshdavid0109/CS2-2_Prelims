@@ -1,10 +1,13 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
+
+    private static List<rowData> rowDataList = new ArrayList<>();
+
     public static void main(String[] args) {
 
         String line = "";
-        String delimiter = ";";
         int temp = -1;
         int i = 1;
 
@@ -13,14 +16,20 @@ public class Main {
             BufferedReader br = new BufferedReader(new FileReader("stormwater-pipes_3.csv"));
             // Reading the file line by line and stopping when it reaches the 1000th line.
             while (((line = br.readLine()) != null) && i <= 1000) {
-                String [] rowData = line.split(delimiter);
-                String columnHeader = "createdate";
+                String [] rowData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                String columnHeader = "location";
 
                 if (temp == -1) {
-                    temp = findColumn(rowData, columnHeader);;
+                    temp = findColumn(rowData, columnHeader);
                     continue;
                 }
 
+                rowDataList.add(new rowData(rowData[0], rowData[1], rowData[2], rowData[3],
+                        rowData[4], rowData[5], rowData[6], rowData[7], rowData[8], rowData[9],
+                        rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
+                        rowData[16], rowData[17], rowData[18]));
+
+/*
                 if (rowData[temp].equals("")) {
                     System.out.printf("Date for row [%d] " , i);
                     System.out.println();
@@ -28,16 +37,19 @@ public class Main {
                     continue;
                 }
 
-                System.out.printf("Date for row [%d] " + rowData[temp].substring(0, rowData[temp].indexOf(' ')), i);
+
+                System.out.printf("Date for row [%d] " + rowData[temp], i);
                 System.out.println();
 
-                i++;
+                i++;*/
 
             }
-        } catch (IOException e) {
+        } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
 
+
+        System.out.println(rowDataList.toString());
 
     }
 
