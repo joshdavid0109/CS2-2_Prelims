@@ -4,14 +4,13 @@
  * Decena, Alexcious Norlan -
  * Molintas, Jonison Martel -
  * Tarlit, Ariel Jr. - 2221621
- * <p>
- * <p>
+ *
+ *
  * PROBLEM:
- * <p>
+ *
  * SUBMITTED TO:
  * DATE:
  **/
-
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -76,8 +75,8 @@ public class MainMenu {
             switch (choiceFilteredData) {
                 case 1 -> PrintData(); // placeholder
                 case 2 -> PrintData(); // placeholder
-                case 3 -> PrintFilteredDataMenu();
-                case 4 -> PrintData(); //placeholder
+                case 3 -> PrintData(); // placeholder
+                case 4 -> PrintData(); // placeholder
                 case 5 -> PrintData(); // placeholder
             }
         } while (choiceFilteredData != 5);
