@@ -1,27 +1,26 @@
 /**
  * AUTHORS: Abella, Jahn Crystan - 2224514
- *          David, Joshua Daniel - 2222551
- *          Decena, Alexcious Norlan -
- *          Molintas, Jonison Martel -
- *          Tarlit, Ariel Jr. - 2221621
- *
- *
+ * David, Joshua Daniel - 2222551
+ * Decena, Alexcious Norlan -
+ * Molintas, Jonison Martel -
+ * Tarlit, Ariel Jr. - 2221621
+ * <p>
+ * <p>
  * PROBLEM:
- *
+ * <p>
  * SUBMITTED TO:
  * DATE:
- *
-**/
+ **/
 
 
- import java.io.BufferedReader;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainMenu extends Main {
+public class MainMenu {
     private static List<rowData> rowDataList = new ArrayList<>();
     static Scanner kbd = new Scanner(System.in);
 
@@ -30,7 +29,7 @@ public class MainMenu extends Main {
         System.out.println("Press enter to continue...");
         kbd.nextLine();
 
-        System.out.println("Classify yourself!");
+        System.out.println("pili ka option ");
         System.out.println("[1] Load the data");
         System.out.println("[2] Print the data");
         System.out.println("[3] View Filtered Data");
@@ -39,42 +38,53 @@ public class MainMenu extends Main {
         return kbd.nextByte();
     }
 
-    public static void PrintFilteredDataMenu() {
+    public static void RunMainMenu() {
+        byte choiceMenu;
+
+        do {
+            choiceMenu = IntroductionMenu();
+            switch (choiceMenu) {
+                case 1 -> PrintData(); // placeholder
+                case 2 -> PrintData(); // placeholder
+                case 3 -> {
+                    PrintFilteredDataMenu();
+                    ViewFilteredData();
+                }
+                case 4 -> PrintData(); // placeholder
+                case 5 -> PrintData(); // placeholder
+            }
+        } while (choiceMenu != 5);
+    }
+
+    public static byte PrintFilteredDataMenu() {
         System.out.println("test test");
         System.out.println("[1] Alphabetically Arrange Data");
-        System.out.println("[2] Sort Decending Order");
+        System.out.println("[2] Sort Descending Order");
         System.out.println("[3] Sort Ascending Order");
         System.out.println("[4] ");
         System.out.println("[5] ");
         System.out.println("[6]");
         System.out.println("[5] Back to Main Menu");
+        return kbd.nextByte();
     }
 
     public static void ViewFilteredData() {
+        byte choiceFilteredData;
 
-            int chFilter = kbd.nextInt();
-            do {
-                switch(chFilter) {
-                    case 1 :
+        do {
+            choiceFilteredData = PrintFilteredDataMenu();
+            switch (choiceFilteredData) {
+                case 1 -> PrintData(); // placeholder
+                case 2 -> PrintData(); // placeholder
+                case 3 -> PrintFilteredDataMenu();
+                case 4 -> PrintData(); //placeholder
+                case 5 -> PrintData(); // placeholder
+            }
+        } while (choiceFilteredData != 5);
+    }
 
-                        break;
-                    case 2 :
 
-                        break;
-                    case 3 :
-
-                        break;
-                    case 4 :
-
-                        break;
-                    case 5 :
-                        System.exit(0);
-                        break;
-                }
-            } while(chFilter != 6);
-        }
-
-    public static void printData() {
+    public static void PrintData() {
         String line = "";
         int temp = -1;
         int i = 1;
@@ -138,10 +148,10 @@ public class MainMenu extends Main {
 
     }
 
-    public static int findColumn(String [] rowData, String cHeader) {
+    public static int findColumn(String[] rowData, String cHeader) {
         int x = 0;
         for (int i = 1; i <= rowData.length; i++) {
-            if (rowData[i].equals(cHeader)){
+            if (rowData[i].equals(cHeader)) {
                 x = i;
                 return x;
             }
@@ -149,19 +159,7 @@ public class MainMenu extends Main {
         return x;
     }
 
-    public static void run() {
-        byte choiceMenu;
-
-        do {
-            choiceMenu = IntroductionMenu();
-            switch (choiceMenu) {
-                case 1 -> printData(); // placeholder
-                case 2 -> printData(); // placeholder
-                case 3->  printData(); // placeholder
-            }
-        } while(choiceMenu != 5);
-    }
     public static void main(String[] args) {
-        run();
+        RunMainMenu();
     }
 }
