@@ -54,12 +54,18 @@ public class Main {
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
+
         List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals("Third Fork Creek")).toList();
 
 
-        System.out.println(rowDataList.toString());
+
+//        System.out.println(rowDataList.toString());
+
+
+
 
         System.out.println(result.toString());
+
 
     }
 
