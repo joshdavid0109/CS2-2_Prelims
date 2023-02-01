@@ -155,9 +155,9 @@ public class MainMenu extends Main {
         do {
             choiceMenu = IntroductionMenu();
             switch (choiceMenu) {
-                case 1 -> printData();
-                case 2 -> printData();
-                case 3->  printData();
+                case 1 -> printData(); // placeholder
+                case 2 -> printData(); // placeholder
+                case 3->  printData(); // placeholder
             }
         } while(choiceMenu != 5);
     }
