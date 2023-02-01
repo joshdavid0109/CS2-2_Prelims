@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -34,6 +35,7 @@ public class Main {
                         rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
                         rowData[16], rowData[17], rowData[18]));
 
+
 /*  TEST LANG ITOWS
                 if (rowData[temp].equals("")) {
                     System.out.printf("Date for row [%d] " , i);
@@ -52,9 +54,12 @@ public class Main {
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
+        List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals("Third Fork Creek")).toList();
 
 
         System.out.println(rowDataList.toString());
+
+        System.out.println(result.toString());
 
     }
 
