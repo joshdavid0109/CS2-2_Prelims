@@ -7,20 +7,41 @@ public class Main {
     private static List<rowData> rowDataList = new ArrayList<>();
 
     public static void main(String[] args) {
+        System.out.printf("%-10s%-10s%-15s%-50s%-10s%-10s%-10s%-10s%-15s%-10s%-10s%-30s%-15s%-15s%-10s%-15s%-20s%-20s%-20s%n",
+                "Object ID", "Facility ID", "Legacy ID", "Location", "Depth US", "Depth DS", "Height", "Invert US", "Invert DS",
+                "Diameter", "Width", "Modified Date", "Material", "Form", "pSlope", "Admin Area", "Shape Length",
+                "Operational Area", "Owner");
 
+
+
+        readDataSet();
+
+        List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals("Third Fork Creek")).toList();
+
+
+
+
+        // Sort in alphabetical order
+        List <rowData> sortedNames = rowDataList.stream()
+                        .sorted(Comparator.comparing(s -> s.getLocation()))
+                                .collect(Collectors.toList());
+
+        System.out.println(sortedNames);
+        /*System.out.println(rowDataList.toString());
+        System.out.println(result.toString());*/
+
+    }
+
+    private static void readDataSet() {
         String line = "";
         int temp = -1;
         int i = 1;
-
-
         try {
+
             BufferedReader br = new BufferedReader(new FileReader("stormwater-pipes_3.csv"));
             // Reading the file line by line and stopping when it reaches the 1000th line.
 
-            System.out.printf("%-10s%-10s%-15s%-50s%-10s%-10s%-10s%-10s%-15s%-10s%-10s%-30s%-15s%-15s%-10s%-15s%-20s%-20s%-20s%n",
-                    "Object ID", "Facility ID", "Legacy ID", "Location", "Depth US", "Depth DS", "Height", "Invert US", "Invert DS",
-                    "Diameter", "Width", "Modified Date", "Material", "Form", "pSlope", "Admin Area", "Shape Length",
-                    "Operational Area", "Owner");
+
             while (((line = br.readLine()) != null) && i <= 1000) {
                 String [] rowData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 String columnHeader = "location";
@@ -36,37 +57,10 @@ public class Main {
                         rowData[16], rowData[17], rowData[18]));
 
 
-/*  TEST LANG ITOWS
-                if (rowData[temp].equals("")) {
-                    System.out.printf("Date for row [%d] " , i);
-                    System.out.println();
-                    i++;
-                    continue;
-                }
-
-
-                System.out.printf("Date for row [%d] " + rowData[temp], i);
-                System.out.println();
-
-                i++;*/
-
             }
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
-        List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals("Third Fork Creek")).toList();
-
-
-     /*   // Sort in alphabetical order
-        List <rowData> sortedNames = rowDataList.stream()
-                        .sorted(Comparator.comparing(s -> s.getLocation()))
-                                .collect(Collectors.toList());
-
-        sortedNames.forEach(s -> System.out.println(s.getLocation())); // print alphabetical order*/
-
-        System.out.println(rowDataList.toString());
-        System.out.println(result.toString());
-
     }
 
     public static int findColumn(String [] rowData, String cHeader) {
