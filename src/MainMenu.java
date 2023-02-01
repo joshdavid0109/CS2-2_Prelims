@@ -4,12 +4,8 @@
  * Decena, Alexcious Norlan -
  * Molintas, Jonison Martel -
  * Tarlit, Ariel Jr. - 2221621
- * <p>
- * <p>
- * PROBLEM:
- * <p>
- * SUBMITTED TO:
- * DATE:
+ * SUBMITTED TO: Mrs. Ma. Concepcion Clemente
+ * DATE: 2/2/2023
  **/
 
 import java.io.BufferedReader;
@@ -25,45 +21,46 @@ public class MainMenu {
     private static List<rowData> rowDataList = new ArrayList<>();
     static Scanner kbd = new Scanner(System.in);
 
-    public static byte printIntroductionMenu() {
-        System.out.println("Welcome to the Data Viewer Program! ");
-        System.out.println("Press enter to continue...");
+    public static void printIntroduction() {
+        System.out.println("Activity 0 - Information Management");
+        System.out.println("\033[3mA Java Program for Reading Data\033[0m\n"); // change niyo nalang hehe
+        System.out.println("Press enter to continue... ");
         kbd.nextLine();
+    }
 
-        System.out.println("pili a option heehehe ");
-        System.out.println("[1] Load the data (wala pa e2)");
-        System.out.println("[2] Print the data");
-        System.out.println("[3] Sort Data");
-        System.out.println("[4] Filter Data");
-        System.out.println("[5] Exit the program");
-        return kbd.nextByte();
+    public static void printMenu() {
+        System.out.println("[1] Print the data");
+        System.out.println("[2] Sort Data");
+        System.out.println("[3] Filter Data");
+        System.out.println("[4] Exit the program\n");
+
+        System.out.println("Input your choice: ");
+        runMainMenu();
+
     }
 
     public static void runMainMenu() {
-        byte choiceMenu;
+        int choiceMenu;
+        choiceMenu = kbd.nextInt();
 
         do {
-            choiceMenu = printIntroductionMenu();
             switch (choiceMenu) {
-                case 1 -> {
-                    readDataSet();
-                    choiceMenu = 0;
-                }
-                case 2 -> printData();
-                case 3 -> {
+                case 1:
+                    printData();
+                case 2:
                     printSortDataMenu();
                     sortDataAccordingToColumns();
-                }
-                case 4 -> {
+                case 3: {
                     printFilterData();
                     filterDataAccordingtoColumns();
                 }
-                case 5 -> {
+                case 4: {
                     System.out.println("Thank you for using our program!!");
                     System.exit(1);
                 }
             }
-        } while (choiceMenu != 6);
+            break;
+        } while (choiceMenu != 5);
     }
 
     // Case [1]
@@ -71,6 +68,8 @@ public class MainMenu {
         System.out.println(rowDataList.toString());
         System.out.println("Press enter to continue...");
         kbd.nextLine();
+        kbd.nextLine();
+        printMenu();
     }
 
     public static void printSortDataMenu() {
@@ -78,98 +77,64 @@ public class MainMenu {
         System.out.println("[1] Sort according to date");
         System.out.println("[2] Sort string data");
         System.out.println("[3] Sort integers/double data");
-        System.out.println("[4] ");
-        System.out.println("[5] ");
-        System.out.println("[6]");
-        System.out.println("[5] Back to Main Menu\n");
-        System.out.println("Select your option: ");
+        System.out.println("[4] Back to Main Menu\n");
+        System.out.println("Input your choice: ");
     }
 
     private static void sortDataAccordingToColumns() {
         int choiceSortData = kbd.nextInt();
 
-        if (choiceSortData == 1) {
-            System.out.println("[1] Location");
-            System.out.println("[2] Operational Area");
-            int c = kbd.nextInt();
-            List<rowData> sortedNames;
-            switch (c) {
-                case 1:
-                    sortedNames = rowDataList.stream()
-                            .sorted(Comparator.comparing(rowData::getLocation))
-                            .collect(Collectors.toList());
-                    System.out.println(sortedNames);
-                    break;
-                case 2:
-                    sortedNames = rowDataList.stream()
-                            .sorted(Comparator.comparing(rowData::getOperationalArea))
-                            .collect(Collectors.toList());
-                    System.out.println(sortedNames);
-                    break;
-            }
+        switch (choiceSortData) {
+            case 1:
+                System.out.println("[1] Location");
+                System.out.println("[2] Operational Area");
+                int c = kbd.nextInt();
+                List<rowData> sortedNames;
+                switch (c) {
+                    case 1:
+                        sortedNames = rowDataList.stream()
+                                .sorted(Comparator.comparing(rowData::getLocation))
+                                .collect(Collectors.toList());
+                        System.out.println(sortedNames);
+                        printSortDataMenu();
+                        sortDataAccordingToColumns();
+                        break;
+                    case 2:
+                        sortedNames = rowDataList.stream()
+                                .sorted(Comparator.comparing(rowData::getOperationalArea))
+                                .collect(Collectors.toList());
+                        System.out.println(sortedNames);
+                        printSortDataMenu();
+                        sortDataAccordingToColumns();
+                        break;
+                }
+
+            case 2:
+                break; // sort string data
+            case 3:
+                break; // sort integers/double data
+            case 4:
+                printMenu();
+
+                break;
         }
 
     }
 
     public static void printFilterData() {
-        System.out.println("Select your option: ");
+        System.out.println("FILTERING DATA");
+
         System.out.println("[1] Material");
         System.out.println("[2] Operational Area");
         System.out.println("[3] Ownership");
-        System.out.println("[4] Back to Main Menu");
-        System.out.println("[5] ");
-        System.out.println("[6]");
-        System.out.println("[5]");
-
-    }
-
-    private static void showOAChoices(List<rowData> list) {
-        System.out.println("\t List of Operational Areas");
-        for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
-                System.out.printf("[%d] " + "Go Back\n", i);
-                continue;
-            }
-            System.out.printf("[%d] " + list.get(i - 1).getOperationalArea(), i);
-            System.out.println();
-        }
-    }
-
-    private static void showMaterialChoices(List<rowData> list) {
-        System.out.println("\t List of Materials");
-        for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
-                System.out.printf("[%d] " + "Go Back\n", i);
-                continue;
-            }
-            System.out.printf("[%d] " + list.get(i - 1).getMaterial(), i);
-            System.out.println();
-        }
-    }
-
-    private static void showOwnershipChoices(List<rowData> list) {
-        System.out.println("\t List of Ownerships");
-        for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
-                System.out.printf("[%d] " + "Go Back\n", i);
-                continue;
-            }
-            System.out.printf("[%d] " + list.get(i - 1).getOwner(), i);
-            System.out.println();
-        }
-    }
-
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
+        System.out.println("[4] Back to Main Menu\n");
+        System.out.println("Input your choice: ");
     }
 
     private static void filterDataAccordingtoColumns() {
-        System.out.println("FILTERING DATA");
         int c = 0;
         List<rowData> distinctV;
         List<rowData> result;
-        printFilterData();
         c = kbd.nextInt();
 
         int choice = 0;
@@ -239,10 +204,14 @@ public class MainMenu {
                             printHeaders();
                             System.out.println(result);
                         }
+
+                        case 13 -> {
+                            System.out.println("dog");
+                        }
                         default -> {
                         }
                     }
-                    System.out.print("\nchoice"); // pang stop ng loop
+                    System.out.print("\nInput your choice: "); // pang stop ng loop
                     choice = kbd.nextInt();
                 } while (choice != distinctV.size() + 1);
                 break;
@@ -324,13 +293,15 @@ public class MainMenu {
                             System.out.println(result);
                         }
                         case 15 -> {
-
+                            printMenu();
+                            runMainMenu();
                         }
                         default -> {
                         }
                     }
                     System.out.print("\nInput your choice: "); // pang stop ng loop
                     choice = kbd.nextInt();
+
                 } while (choice != distinctV.size() + 1);
                 break;
 
@@ -400,21 +371,59 @@ public class MainMenu {
                             System.out.println(result);
                         }
 
-                        case 13 -> {
+                        case 13 -> printMenu();
 
-                        }
-                        default -> {
-                        }
                     }
 
                     System.out.print("\nInput your choice: "); // pang stop ng loop
                     choice = kbd.nextInt();
                 } while (choice != distinctV.size() + 1);
                 break;
-
-            default:
-                break;
+            case 4:
+                printMenu();
         }
+    }
+
+    private static void showOAChoices(List<rowData> list) {
+        System.out.println("\t List of Operational Areas");
+        for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size() + 1) {
+                System.out.printf("[%d] " + "Go Back\n", i);
+                continue;
+            }
+            System.out.printf("[%d] " + list.get(i - 1).getOperationalArea(), i);
+            System.out.println();
+        }
+    }
+
+    private static void showMaterialChoices(List<rowData> list) {
+        System.out.println("\t List of Materials");
+        for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size() + 1) {
+                System.out.printf("[%d] " + "Go Back\n", i);
+                continue;
+            }
+            System.out.printf("[%d] " + list.get(i - 1).getMaterial(), i);
+            System.out.println();
+        }
+    }
+
+    private static void showOwnershipChoices(List<rowData> list) {
+        System.out.println("\t List of Ownerships");
+        for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size() + 1) {
+                System.out.printf("[%d] " + "Go Back\n", i);
+                continue;
+            }
+            System.out.printf("[%d] " + list.get(i - 1).getOwner(), i);
+            System.out.println();
+        }
+    }
+
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
     private static void printHeaders() {
@@ -450,15 +459,6 @@ public class MainMenu {
         }
     }
 
-
-       /* lagay ko lang, alphabetical sorting tapos print
-        List <rowData> sortedAlphabetical = rowDataList.stream()
-                        .sorted(Comparator.comparing(s -> s.getLocation()))
-                                .collect(Collectors.toList());
-
-        sortedAlphabetical.forEach(s -> System.out.println(s.getLocation())); // print alphabetical order
-       */
-
     public static int findColumn(String[] rowData, String cHeader) {
         int x = 0;
         for (int i = 1; i <= rowData.length; i++) {
@@ -472,6 +472,7 @@ public class MainMenu {
 
     public static void main(String[] args) {
         readDataSet();
-        runMainMenu();
+        printIntroduction();
+        printMenu();
     }
 }
