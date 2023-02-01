@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainMenu extends Main {
+public class MainMenu {
     private static List<rowData> rowDataList = new ArrayList<>();
     static Scanner kbd = new Scanner(System.in);
 
