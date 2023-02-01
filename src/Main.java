@@ -54,13 +54,23 @@ public class Main {
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
-        List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals("Third Fork Creek")).toList();
+
+        List<rowData> result = rowDataList.stream().filter
+                (s -> s.getOperationalArea().equals ("Third Fork Creek")).toList();
+
+
+        /* lagay ko lang, alphabetical sorting tapos print
+        List <rowData> sortedAlphabetical = rowDataList.stream()
+                        .sorted(Comparator.comparing(s -> s.getLocation()))
+                                .collect(Collectors.toList());
+
+        sortedAlphabetical.forEach(s -> System.out.println(s.getLocation())); // print alphabetical order
+        result.forEach(s -> System.out.println(s.getOperationalArea()));
+         */
 
 
         System.out.println(rowDataList.toString());
-
         System.out.println(result.toString());
-
     }
 
     public static int findColumn(String [] rowData, String cHeader) {
