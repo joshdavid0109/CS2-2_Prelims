@@ -54,18 +54,18 @@ public class Main {
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
-
         List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals("Third Fork Creek")).toList();
 
 
+     /*   // Sort in alphabetical order
+        List <rowData> sortedNames = rowDataList.stream()
+                        .sorted(Comparator.comparing(s -> s.getLocation()))
+                                .collect(Collectors.toList());
 
-//        System.out.println(rowDataList.toString());
+        sortedNames.forEach(s -> System.out.println(s.getLocation())); // print alphabetical order*/
 
-
-
-
+        System.out.println(rowDataList.toString());
         System.out.println(result.toString());
-
 
     }
 
