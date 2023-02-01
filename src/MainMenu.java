@@ -30,7 +30,7 @@ public class MainMenu extends Main {
         System.out.println("Press enter to continue...");
         kbd.nextLine();
 
-        System.out.println("Classify yourself!");
+        System.out.println("pili ka option ");
         System.out.println("[1] Load the data");
         System.out.println("[2] Print the data");
         System.out.println("[3] View Filtered Data");
