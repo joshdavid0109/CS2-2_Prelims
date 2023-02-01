@@ -59,15 +59,12 @@ public class Main {
                 (s -> s.getOperationalArea().equals ("Third Fork Creek")).toList();
 
 
-        /* lagay ko lang, alphabetical sorting tapos print
-        List <rowData> sortedAlphabetical = rowDataList.stream()
+     /*   // Sort in alphabetical order
+        List <rowData> sortedNames = rowDataList.stream()
                         .sorted(Comparator.comparing(s -> s.getLocation()))
                                 .collect(Collectors.toList());
 
-        sortedAlphabetical.forEach(s -> System.out.println(s.getLocation())); // print alphabetical order
-        result.forEach(s -> System.out.println(s.getOperationalArea()));
-         */
-
+        sortedNames.forEach(s -> System.out.println(s.getLocation())); // print alphabetical order*/
 
         System.out.println(rowDataList.toString());
         System.out.println(result.toString());
