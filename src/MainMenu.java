@@ -25,7 +25,7 @@ public class MainMenu {
     private static List<rowData> rowDataList = new ArrayList<>();
     static Scanner kbd = new Scanner(System.in);
 
-    public static byte IntroductionMenu() {
+    public static byte printIntroductionMenu() {
         System.out.println("Welcome to the Data Viewer Program! ");
         System.out.println("Press enter to continue...");
         kbd.nextLine();
@@ -39,11 +39,11 @@ public class MainMenu {
         return kbd.nextByte();
     }
 
-    public static void RunMainMenu() {
+    public static void runMainMenu() {
         byte choiceMenu;
 
         do {
-            choiceMenu = IntroductionMenu();
+            choiceMenu = printIntroductionMenu();
             switch (choiceMenu) {
                 case 1 -> {
                     readDataSet();
@@ -51,11 +51,11 @@ public class MainMenu {
                 }
                 case 2 -> printData();
                 case 3 -> {
-                    PrintSortDataMenu();
+                    printSortDataMenu();
                     sortDataAccordingToColumns();
                 }
                 case 4 -> {
-                    PrintFilterData();
+                    printFilterData();
                     filterDataAccordingtoColumns();
                 }
                 case 5 -> {
@@ -73,7 +73,7 @@ public class MainMenu {
         kbd.nextLine();
     }
 
-    public static void PrintSortDataMenu() {
+    public static void printSortDataMenu() {
         System.out.println("SORTING OF DATA\n");
         System.out.println("[1] Sort according to date");
         System.out.println("[2] Sort string data");
@@ -111,7 +111,7 @@ public class MainMenu {
 
     }
 
-    public static void PrintFilterData() {
+    public static void printFilterData() {
         System.out.println("Select your option: ");
         System.out.println("[1] Material");
         System.out.println("[2] Operational Area");
@@ -169,7 +169,7 @@ public class MainMenu {
         int c = 0;
         List<rowData> distinctV;
         List<rowData> result;
-        PrintFilterData();
+        printFilterData();
         c = kbd.nextInt();
 
         int choice = 0;
@@ -472,6 +472,6 @@ public class MainMenu {
 
     public static void main(String[] args) {
         readDataSet();
-        RunMainMenu();
+        runMainMenu();
     }
 }
