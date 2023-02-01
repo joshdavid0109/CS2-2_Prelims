@@ -121,7 +121,7 @@ public class rowData {
 
     @Override
     public String toString() {
-        return String.format("%-10s%-10s%-15s%-50s%-10s%-10s%-10s%-10s%-15s%-10s%-10s%-30s%-15s%-15s%-10s%-15s%-20s%-20s%-20s%n",
+        return String.format("%-15s%-15s%-15s%-50s%-10s%-10s%-10s%-10s%-15s%-10s%-10s%-30s%-20s%-15s%-10s%-15s%-20s%-20s%-20s%n",
                 objectID, facilityID, legacyID, location, (depthUS.equals(""))? "" : depthUS, (depthDS.equals("")) ? "": depthDS,
                 (height.equals(""))? "" : height, (invertUS.equals("")) ? "": invertUS, (invertDS.equals("")) ? "" : invertDS,
                 (diameter.equals("")) ? "": diameter, (width.equals("")) ? "": width, (date.equals(""))? "" :date, (material.equals(""))? "":material,

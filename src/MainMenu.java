@@ -116,20 +116,6 @@ public class MainMenu {
             e.printStackTrace();
         }
 
-                /*  TEST LANG ITOWS
-                if (rowData[temp].equals("")) {
-                    System.out.printf("Date for row [%d] " , i);
-                    System.out.println();
-                    i++;
-                    continue;
-                }
-
-
-                System.out.printf("Date for row [%d] " + rowData[temp], i);
-                System.out.println();
-
-                i++;*/
-
 //        List<rowData> result = rowDataList.stream().filter
 //                (s -> s.getOperationalArea().equals ("Third Fork Creek")).toList();
 
