@@ -36,7 +36,7 @@ public class MainMenu {
         System.out.println("[4] Aggregate Functions");
         System.out.println("[5] Exit the program\n");
 
-        System.out.println("Input your choice: ");
+        System.out.print("Input your choice: ");
         runMainMenu();
     }
 
@@ -71,12 +71,12 @@ public class MainMenu {
 
             }
             break;
-        } while (choiceMenu != 6);
+        } while (choiceMenu != 5);
     }
 
     // Case [1]
     private static void printData() {
-        System.out.println(rowDataList.toString());
+        System.out.println(rowDataList.toString().replace(",", ""));
         System.out.println("Press enter to continue...");
         kbd.nextLine();
         kbd.nextLine();
@@ -110,6 +110,8 @@ public class MainMenu {
                 distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).collect(Collectors.toList());
                 do {
                     showMaterialChoices(distinctV);
+                    System.out.print("\nInput your choice: "); // pang stop ng loop
+                    choice = kbd.nextInt();
                     switch (choice) {
                         case 1 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(0).getMaterial())).toList();
@@ -178,8 +180,7 @@ public class MainMenu {
                         default -> {
                         }
                     }
-                    System.out.print("\nInput your choice: "); // pang stop ng loop
-                    choice = kbd.nextInt();
+
                 } while (choice != distinctV.size() + 1);
                 break;
 
@@ -188,6 +189,8 @@ public class MainMenu {
 
                 do {
                     showOAChoices(distinctV);
+                    System.out.print("\nInput your choice: "); // pang stop ng loop
+                    choice = kbd.nextInt();
                     switch (choice) {
                         case 1 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(0).getOperationalArea())).toList();
@@ -266,8 +269,7 @@ public class MainMenu {
                         default -> {
                         }
                     }
-                    System.out.print("\nInput your choice: "); // pang stop ng loop
-                    choice = kbd.nextInt();
+
 
                 } while (choice != distinctV.size() + 1);
                 break;
@@ -276,6 +278,8 @@ public class MainMenu {
                 distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOwner)).collect(Collectors.toList());
                 do {
                     showOwnershipChoices(distinctV);
+                    System.out.print("\nInput your choice: "); // pang stop ng loop
+                    choice = kbd.nextInt();
                     switch (choice) {
                         case 1 -> {
                             result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(0).getOwner())).toList();
@@ -342,8 +346,7 @@ public class MainMenu {
 
                     }
 
-                    System.out.print("\nInput your choice: "); // pang stop ng loop
-                    choice = kbd.nextInt();
+
                 } while (choice != distinctV.size() + 1);
                 break;
             case 4:
@@ -540,98 +543,120 @@ public class MainMenu {
     }
 
     private static int descendingOrder(int choice, int c) {
-        while (choice < 4){
+        do {
             sortSubMenu();
+            System.out.print("Choice: ");
             choice = kbd.nextInt();
-            if (choice == 1) {
-                List<rowData> sortedDates;
+            switch (choice){
+                case 1:
+                    List<rowData> sortedDates;
 
-                printHeaders();
-                sortedDates = rowDataList.stream()
-                        .sorted(Comparator.comparing(rowData::getDate).reversed()).collect(Collectors.toList());
-                System.out.println(sortedDates.toString().replace(",", ""));
-                continue;
-            } else if (choice == 2) {
-                System.out.println("[1] Location");
-                System.out.println("[2] Operational Area");
-                System.out.println("[3] Go Back");
-                c = kbd.nextInt();
-                List<rowData> sortedNames;
-                switch (c) {
-                    case 1:
-                        sortedNames = rowDataList.stream()
-                                .sorted(Comparator.comparing(rowData::getLocation).reversed())
-                                .collect(Collectors.toList());
-                        System.out.println(sortedNames);
-                        break;
-                    case 2:
-                        sortedNames = rowDataList.stream()
-                                .sorted(Comparator.comparing(rowData::getOperationalArea).reversed())
-                                .collect(Collectors.toList());
-                        System.out.println(sortedNames);
-                        break;
-                    default:
-                        continue;
-                }
-                continue;
-            } else if (choice == 3) {
-                List<rowData> temp;
-                do {
-                    metricSubMenu();
-                    System.out.print("  Choice : ");
+                    printHeaders();
+                    sortedDates = rowDataList.stream()
+                            .sorted(Comparator.comparing(rowData::getDate).reversed()).collect(Collectors.toList());
+                    System.out.println(sortedDates.toString().replace(",", ""));
+                    pressEnter();
+                    break;
+                case 2:
+                    System.out.println("Columns that contain string data");
+                    System.out.println("[1] Location");
+                    System.out.println("[2] Operational Area");
+                    System.out.println("[3] Go Back");
+                    System.out.print("Choice: ");
                     c = kbd.nextInt();
+                    List<rowData> sortedNames;
                     switch (c) {
-                        case 1 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 2 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 3 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 4 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 5 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 6 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 7 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        case 8 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
-                        }
-                        default -> {
-                        }
+                        case 1:
+                            sortedNames = rowDataList.stream()
+                                    .sorted(Comparator.comparing(rowData::getLocation).reversed())
+                                    .collect(Collectors.toList());
+                            System.out.println(sortedNames.toString().replace(",", ""));
+                            pressEnter();
+                            break;
+                        case 2:
+                            sortedNames = rowDataList.stream()
+                                    .sorted(Comparator.comparing(rowData::getOperationalArea).reversed())
+                                    .collect(Collectors.toList());
+                            System.out.println(sortedNames.toString().replace(",", ""));
+                            pressEnter();
+                            break;
+                        default:
+                            continue;
                     }
+                    break;
+                case 3:
+                    List<rowData> temp;
+                    do {
+                        metricSubMenu();
+                        System.out.print(" Choice: ");
+                        pressEnter();
+                        c = kbd.nextInt();
+                        switch (c) {
+                            case 1 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 2 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 3 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 4 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 5 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 6 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 7 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 8 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            default -> {
+                            }
+                        }
 
-
-                } while (c != 9);
-            } else
-                return kbd.nextInt();
-        }
-        return kbd.nextInt();
+                    } while (c != 9);
+                    break;
+            }
+        } while (choice !=4);
+        return choice;
     }
+
+    public static void pressEnter() {
+        System.out.println("\nPress Enter to Continue");
+        kbd.nextLine();
+        kbd.nextLine();
+    }
+
 
     private static int ascendingOrder(int choice, int c) {
         while (choice < 4){
@@ -736,11 +761,11 @@ public class MainMenu {
             BufferedReader br = new BufferedReader(new FileReader("stormwater-pipes_3.csv"));
             // Reading the file line by line and stopping when it reaches the 1000th line.
             while (((line = br.readLine()) != null) && i <= 1000) {
-                String[] rowData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                String[] rowData = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 String columnHeader = "location";
 
                 if (temp == -1) {
-                    temp = findColumn(rowData, columnHeader);
+                    findColumn(rowData, columnHeader);
                     continue;
                 }
 

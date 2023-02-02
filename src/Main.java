@@ -23,7 +23,7 @@ public class Main {
 
         do {
 
-            System.out.println("Pili ka muna 1[FILTER], 2 [SORT], 3 [AGGREGATE FUNCTIONS] 3 [EXIT]");
+            System.out.println("Pili ka muna\n 1[FILTER]\n2 [SORT]\n3 [AGGREGATE FUNCTIONS]\n4 [EXIT]");
 
             choice = kbd.nextInt()  ;
             switch (choice) {
@@ -37,7 +37,6 @@ public class Main {
                     break;
                 // Aggregate Functions
                 case 3:
-                    getMin();
                     aggregateFunctions();
                     break;
                 default:
@@ -50,24 +49,12 @@ public class Main {
 
     }
 
-    public static <T> Collector<T, ?, T> toSingleton() {
-        return Collectors.collectingAndThen(
-                Collectors.toList(),
-                list -> {
-                    if (list.size() != 1) {
-                        throw new IllegalStateException();
-                    }
-                    return list.get(0);
-                }
-        );
-    }
-
     private static void aggregateFunctions() {
         int choice = 0;
 
         do {
             functionsSubMenu();
-            System.out.print("Choice: ");
+            System.out.print("Input your choice:  ");
             choice = kbd.nextInt();
             switch (choice) {
                 // Averages
@@ -359,7 +346,7 @@ public class Main {
     private static int descendingOrder(int choice, int c) {
         do {
             sortSubMenu();
-            System.out.print("Choice: ");
+            System.out.print("Input your choice:  ");
             choice = kbd.nextInt();
             switch (choice){
                 case 1:
@@ -376,7 +363,7 @@ public class Main {
                     System.out.println("[1] Location");
                     System.out.println("[2] Operational Area");
                     System.out.println("[3] Go Back");
-                    System.out.print("Choice: ");
+                    System.out.print("Input your choice:  ");
                     c = kbd.nextInt();
                     List<rowData> sortedNames;
                     switch (c) {
@@ -402,7 +389,7 @@ public class Main {
                     List<rowData> temp;
                     do {
                         metricSubMenu();
-                        System.out.print(" Choice: ");
+                        System.out.print(" Input your choice:  ");
                         pressEnter();
                         c = kbd.nextInt();
                         switch (c) {
@@ -487,7 +474,7 @@ public class Main {
     private static int ascendingOrder(int choice, int c) {
         while (choice < 4){
             sortSubMenu();
-            System.out.print("Choice:");
+            System.out.print("Input your choice: ");
             choice = kbd.nextInt();
             if (choice == 1) {
                 List<rowData> sortedDates;
@@ -496,12 +483,11 @@ public class Main {
                 sortedDates = rowDataList.stream()
                         .sorted(Comparator.comparing(rowData::getDate)).collect(Collectors.toList());
                 System.out.println(sortedDates.toString().replace(",", ""));
-                continue;
             } else if (choice == 2) {
                 System.out.println("[1] Location");
                 System.out.println("[2] Operational Area");
                 System.out.println("[3] Go Back");
-                System.out.print("Choice: ");
+                System.out.print("Input your choice:  ");
                 c = kbd.nextInt();
                 List<rowData> sortedNames;
                 switch (c) {
@@ -525,7 +511,7 @@ public class Main {
                 List<rowData> temp;
                 do {
                     metricSubMenu();
-                    System.out.print("Choice: ");
+                    System.out.print("Input your choice:  ");
                     c = kbd.nextInt();
                     switch (c) {
                         case 1 -> {
@@ -582,292 +568,295 @@ public class Main {
     private static void filterDataAccordingtoColumns() {
         System.out.println("FILTERING OF DATA BASED ON COLUMN HEADERS");
         int c = 0;
+        int choice = 0;
+        do {
         List<rowData> distinctV;
         List<rowData> result;
         showFilterColumnChoices();
-        System.out.print("Choice: ");
+        System.out.print("Input your choice:  ");
         c = kbd.nextInt();
-        int choice = 0;
-        switch (c) {
-            case 1:
-                distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).collect(Collectors.toList());
-                do {
-                    showMaterialChoices(distinctV);
-                    System.out.print("Choice: "); // pang stop ng loop
-                    choice = kbd.nextInt();
-                    switch (choice) {
-                        case 1 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(0).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
+            switch (c) {
+                case 1:
+                    distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).collect(Collectors.toList());
+                    do {
+                        showMaterialChoices(distinctV);
+                        System.out.print("Input your choice:  "); // pang stop ng loop
+                        choice = kbd.nextInt();
+                        switch (choice) {
+                            case 1 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(0).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 2 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(1).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 3 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(2).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 4 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(3).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 5 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(4).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 6 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(5).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 7 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(6).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 8 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(7).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 9 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(8).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 10 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(9).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 11 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(10).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 12 -> {
+                                result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(11).getMaterial())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            default -> {
+
+                            }
                         }
-                        case 2 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(1).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 3 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(2).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 4 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(3).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 5 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(4).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 6 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(5).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 7 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(6).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 8 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(7).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 9 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(8).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 10 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(9).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 11 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(10).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 12 -> {
-                            result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(11).getMaterial())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        default -> {
-                        }
-                    }
 
 
-                } while (choice != distinctV.size() +1);
+                    } while (choice != distinctV.size() + 1);
 
-                break;
-            case 2:
-                distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOperationalArea)).collect(Collectors.toList());
+                    break;
+                case 2:
+                    distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOperationalArea)).collect(Collectors.toList());
 
-                do {
-                    showOAChoices(distinctV);
-                    System.out.println("Choice :"); // pang stop ng loop
-                    choice = kbd.nextInt();
-                    switch (choice) {
-                        case 1 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(0).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
+                    do {
+                        showOAChoices(distinctV);
+                        System.out.println("Choice :"); // pang stop ng loop
+                        choice = kbd.nextInt();
+                        switch (choice) {
+                            case 1 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(0).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 2 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(1).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 3 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(2).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 4 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(3).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 5 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(4).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 6 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(5).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 7 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(6).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 8 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(7).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 9 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(8).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 10 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(9).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 11 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(10).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 12 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(11).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 13 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(12).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 14 -> {
+                                result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(13).getOperationalArea())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            default -> {
+                            }
                         }
-                        case 2 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(1).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 3 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(2).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 4 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(3).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 5 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(4).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 6 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(5).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 7 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(6).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 8 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(7).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 9 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(8).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 10 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(9).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 11 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(10).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 12 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(11).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 13 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(12).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        case 14 -> {
-                            result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(13).getOperationalArea())).toList();
-                            printHeaders();
-                            System.out.println(result.toString().replace(",", ""));
-                            pressEnter();
-                        }
-                        default -> {
-                        }
-                    }
-                } while (choice != distinctV.size() +1);
-                break;
+                    } while (choice != distinctV.size() + 1);
+                    break;
 
-            case 3:
-                distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOwner)).collect(Collectors.toList());
-               do {
-                    showOwnershipChoices(distinctV);
-                   System.out.println("Choice :");
-                   choice = kbd.nextInt();
-                   switch (choice) {
-                       case 1 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(0).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 2 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(1).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 3 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(2).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 4 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(3).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 5 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(4).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 6 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(5).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 7 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(6).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 8 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(7).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 9 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(8).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 10 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(9).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 11 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(10).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       case 12 -> {
-                           result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(11).getOwner())).toList();
-                           printHeaders();
-                           System.out.println(result.toString().replace(",", ""));
-                           pressEnter();
-                       }
-                       default -> {
-                       }
-                   }
-                } while (choice != distinctV.size());
-                break;
+                case 3:
+                    distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOwner)).collect(Collectors.toList());
+                    do {
+                        showOwnershipChoices(distinctV);
+                        System.out.println("Choice :");
+                        choice = kbd.nextInt();
+                        switch (choice) {
+                            case 1 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(0).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 2 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(1).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 3 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(2).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 4 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(3).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 5 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(4).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 6 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(5).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 7 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(6).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 8 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(7).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 9 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(8).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 10 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(9).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 11 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(10).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 12 -> {
+                                result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(11).getOwner())).toList();
+                                printHeaders();
+                                System.out.println(result.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            default -> {
+                            }
+                        }
+                    } while (choice != distinctV.size() + 1);
+                    break;
 
-            default:
-                break;
-        }
+                default:
+                    break;
+            }
+        } while (c != 4);
     }
 
     private static void showOwnershipChoices(List<rowData> list) {
         System.out.println("\t List of Ownerships");
-        for (int i = 1; i <= list.size(); i++) {
-            if (i == list.size()) {
+        for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size()+1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
             }
@@ -879,7 +868,7 @@ public class Main {
     private static void showMaterialChoices(List<rowData> list) {
         System.out.println("\t List of Materials");
         for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
+            if (i == list.size()+1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
             }
@@ -905,7 +894,7 @@ public class Main {
     private static void showOAChoices(List<rowData> list) {
         System.out.println("\t List of Operational Areas");
         for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
+            if (i == list.size()+1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
             }
@@ -939,31 +928,32 @@ public class Main {
                 String columnHeader = "location";
 
                 if (temp == -1) {
-                    temp = findColumn(rowData, columnHeader);
-                    continue;
+                    findColumn(rowData, columnHeader);
+                    temp++;
+                } else {
+                    // Adding a new rowData object to the rowDataList.
+                    rowDataList.add(new rowData(rowData[0], rowData[1], rowData[2], rowData[3],
+                            rowData[4], rowData[5], rowData[6], rowData[7], rowData[8], rowData[9],
+                            rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
+                            rowData[16], rowData[17], rowData[18]));
                 }
 
-                // Adding a new rowData object to the rowDataList.
-                rowDataList.add(new rowData(rowData[0], rowData[1], rowData[2], rowData[3],
-                        rowData[4], rowData[5], rowData[6], rowData[7], rowData[8], rowData[9],
-                        rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
-                        rowData[16], rowData[17], rowData[18]));
-
-
             }
+
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
     }
 
-    public static int findColumn(String [] rowData, String cHeader) {
+    public static int findColumn(String[] rowData, String cHeader) {
         int x = 0;
         for (int i = 1; i <= rowData.length; i++) {
-            if (rowData[i].equals(cHeader)){
+            if (rowData[i].equals(cHeader)) {
                 x = i;
                 return x;
             }
         }
         return x;
     }
+
 }
