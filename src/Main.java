@@ -13,39 +13,56 @@ public class Main {
     private static Scanner kbd = new Scanner(System.in);
     private static List<rowData> rowDataList = new ArrayList<>();
 
-    public static void main(String[] args) {
-
-        int choice = 0;
-
-
+    public static void run() {
         readDataSet();
-
+        int choiceMenu;
 
         do {
-
-            System.out.println("Pili ka muna\n 1[FILTER]\n2 [SORT]\n3 [AGGREGATE FUNCTIONS]\n4 [EXIT]");
-
-            choice = kbd.nextInt()  ;
-            switch (choice) {
-                // Filter data
-                case 1:
-                    filterDataAccordingtoColumns();
-                    break;
-                // sort
-                case 2:
-                    sortDataAccordingToColumns();
-                    break;
-                // Aggregate Functions
-                case 3:
-                    aggregateFunctions();
-                    break;
-                default:
-                    break;
-
+            printMenu();
+            choiceMenu = kbd.nextInt();
+            switch (choiceMenu) {
+                case 1 -> printData();
+                case 2 -> sortDataAccordingToColumns();
+                case 3 -> filterDataAccordingtoColumns();
+                case 4 -> aggregateFunctions();
+                case 5 -> {
+                    System.out.println("Thank you for using our program!!");
+                }
             }
-        } while (choice != 4);
-        
+        } while (choiceMenu != 5);
+    }
 
+    public static void main(String[] args) {
+        printIntroduction();
+
+        run();
+
+    }
+
+    public static void printIntroduction() {
+        System.out.println("Activity 0 - Information Management");
+        System.out.println("\033[3mA Java Program for Reading Data\033[0m\n"); // change niyo nalang hehe
+        System.out.println("Press enter to continue... ");
+        kbd.nextLine();
+    }
+
+    public static void printMenu() {
+        System.out.println("---- MAIN MENU ----");
+        System.out.println("[1] Print the data");
+        System.out.println("[2] Sort Data");
+        System.out.println("[3] Filter Data");
+        System.out.println("[4] Aggregate Functions");
+        System.out.println("[5] Exit the program\n");
+
+        System.out.print("\nInput your choice: ");
+    }
+
+    // Case [1]
+    private static void printData() {
+        System.out.println(rowDataList.toString().replace(",", ""));
+        System.out.println("Press enter to continue...");
+        kbd.nextLine();
+        kbd.nextLine();
 
     }
 
@@ -54,7 +71,7 @@ public class Main {
 
         do {
             functionsSubMenu();
-            System.out.print("Input your choice:  ");
+            System.out.print("\nInput your choice:  ");
             choice = kbd.nextInt();
             switch (choice) {
                 // Averages
@@ -154,6 +171,7 @@ public class Main {
     }
 
     private static void functionsSubMenu() {
+        System.out.println("---- AGGREGATION OPTIONS ----");
         System.out.println("[1] Averages");
         System.out.println("[2] Minimums");
         System.out.println("[3] Maximums");
@@ -320,33 +338,56 @@ public class Main {
 
     // Sort in alphabetical order
     private static void sortDataAccordingToColumns() {
-        System.out.println("SORTING OF DATA");
+        System.out.println("\n---- SORTING OF DATA ----");
         int choice = 0, c = 0, x = 0;
         
         do {
+            System.out.println("---- SEQUENCE OF SORTING ----");
             System.out.println("[1] Ascending ");
             System.out.println("[2] Descending");
             System.out.println("[3] Go Back");
+            System.out.print("\n\nInput your choice: ");
             x = kbd.nextInt();
             switch (x) {
                 case 1:
-                    x = ascendingOrder(choice,c);
+                    ascendingOrder(choice,c);
                     break;
                 case 2:
-                    x = descendingOrder(choice, c);
+                    descendingOrder(choice, c);
                     break;
                 default:
                     break;
             }
 
-        } while (x < 3 );
+        } while (x !=3 );
 
     }
 
-    private static int descendingOrder(int choice, int c) {
+    private static void metricSubMenu() {
+        System.out.println("---- SORTING OF INTEGER/DECIMAL DATA ----");
+        System.out.println("[1] Depth (Up Stream)");
+        System.out.println("[2] Depth (Down Stream)");
+        System.out.println("[3] Height");
+        System.out.println("[4] Invert (Up Stream)");
+        System.out.println("[5] Invert (Down Stream)");
+        System.out.println("[6] Diameter");
+        System.out.println("[7] Pipe Slope");
+        System.out.println("[8] Shape Length");
+        System.out.println("[9] Go Back");
+    }
+
+    private static void sortSubMenu() {
+        System.out.println("---- SORTING SUB MENU ----");
+        System.out.println("[1] Sort according to date");
+        System.out.println("[2] Sort String Data");
+        System.out.println("[3] Sort Integers/Double Data");
+        System.out.println("[4] Go Back");
+    }
+
+    private static void descendingOrder(int choice, int c) {
         do {
             sortSubMenu();
-            System.out.print("Input your choice:  ");
+            System.out.print("\nInput your choice:  ");
             choice = kbd.nextInt();
             switch (choice){
                 case 1:
@@ -363,7 +404,7 @@ public class Main {
                     System.out.println("[1] Location");
                     System.out.println("[2] Operational Area");
                     System.out.println("[3] Go Back");
-                    System.out.print("Input your choice:  ");
+                    System.out.print("\n\nInput your choice:  ");
                     c = kbd.nextInt();
                     List<rowData> sortedNames;
                     switch (c) {
@@ -389,7 +430,7 @@ public class Main {
                     List<rowData> temp;
                     do {
                         metricSubMenu();
-                        System.out.print(" Input your choice:  ");
+                        System.out.print(" \nInput your choice:  ");
                         pressEnter();
                         c = kbd.nextInt();
                         switch (c) {
@@ -446,35 +487,15 @@ public class Main {
                         }
 
                     } while (c != 9);
-                break;
+                    break;
             }
         } while (choice !=4);
-        return choice;
     }
 
-    private static void metricSubMenu() {
-        System.out.println("[1] Depth (Up Stream)");
-        System.out.println("[2] Depth (Down Stream)");
-        System.out.println("[3] Height");
-        System.out.println("[4] Invert (Up Stream)");
-        System.out.println("[5] Invert (Down Stream)");
-        System.out.println("[6] Diameter");
-        System.out.println("[7] Pipe Slope");
-        System.out.println("[8] Shape Length");
-        System.out.println("[9] Go Back");
-    }
-
-    private static void sortSubMenu() {
-        System.out.println("[1] Sort according to date");
-        System.out.println("[2] Sort String Data");
-        System.out.println("[3] Sort Integers/Double Data");
-        System.out.println("[4] Go Back");
-    }
-
-    private static int ascendingOrder(int choice, int c) {
-        while (choice < 4){
+    private static void ascendingOrder(int choice, int c) {
+        do {
             sortSubMenu();
-            System.out.print("Input your choice: ");
+            System.out.print("\nInput your choice: ");
             choice = kbd.nextInt();
             if (choice == 1) {
                 List<rowData> sortedDates;
@@ -484,10 +505,11 @@ public class Main {
                         .sorted(Comparator.comparing(rowData::getDate)).collect(Collectors.toList());
                 System.out.println(sortedDates.toString().replace(",", ""));
             } else if (choice == 2) {
+                System.out.println("---- SORT OF STRING DATA OPTIONS ----");
                 System.out.println("[1] Location");
                 System.out.println("[2] Operational Area");
                 System.out.println("[3] Go Back");
-                System.out.print("Input your choice:  ");
+                System.out.print("\nInput your choice:  ");
                 c = kbd.nextInt();
                 List<rowData> sortedNames;
                 switch (c) {
@@ -506,12 +528,12 @@ public class Main {
                     default:
                         continue;
                 }
-                continue;
+
             } else if (choice == 3) {
                 List<rowData> temp;
                 do {
                     metricSubMenu();
-                    System.out.print("Input your choice:  ");
+                    System.out.print("\nInput your choice:  ");
                     c = kbd.nextInt();
                     switch (c) {
                         case 1 -> {
@@ -559,10 +581,8 @@ public class Main {
                     }
 
                 } while (c != 9);
-            } else
-                return kbd.nextInt();
-        }
-        return kbd.nextInt();
+            }
+        } while (choice != 4);
     }
 
     private static void filterDataAccordingtoColumns() {
@@ -573,14 +593,14 @@ public class Main {
         List<rowData> distinctV;
         List<rowData> result;
         showFilterColumnChoices();
-        System.out.print("Input your choice:  ");
+        System.out.print("\nInput your choice:  ");
         c = kbd.nextInt();
             switch (c) {
                 case 1:
                     distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).collect(Collectors.toList());
                     do {
                         showMaterialChoices(distinctV);
-                        System.out.print("Input your choice:  "); // pang stop ng loop
+                        System.out.print("\nInput your choice:  "); // pang stop ng loop
                         choice = kbd.nextInt();
                         switch (choice) {
                             case 1 -> {
@@ -669,7 +689,7 @@ public class Main {
 
                     do {
                         showOAChoices(distinctV);
-                        System.out.println("Choice :"); // pang stop ng loop
+                        System.out.print("Input your choice:"); // pang stop ng loop
                         choice = kbd.nextInt();
                         switch (choice) {
                             case 1 -> {
@@ -766,7 +786,7 @@ public class Main {
                     distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOwner)).collect(Collectors.toList());
                     do {
                         showOwnershipChoices(distinctV);
-                        System.out.println("Choice :");
+                        System.out.println("Input your choice:");
                         choice = kbd.nextInt();
                         switch (choice) {
                             case 1 -> {
@@ -885,6 +905,7 @@ public class Main {
     }
 
     private static void showFilterColumnChoices() {
+        System.out.println("---- FILTERING OF DATA OPTIONS ----");
         System.out.println("[1] Material");
         System.out.println("[2] Operational Area");
         System.out.println("[3] Ownership");
