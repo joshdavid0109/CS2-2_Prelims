@@ -1,12 +1,11 @@
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
+
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 public class Main {
 
@@ -971,15 +970,14 @@ public class Main {
         }
     }
 
-    public static int findColumn(String[] rowData, String cHeader) {
+    public static void findColumn(String[] rowData, String cHeader) {
         int x = 0;
         for (int i = 1; i <= rowData.length; i++) {
             if (rowData[i].equals(cHeader)) {
                 x = i;
-                return x;
+                return;
             }
         }
-        return x;
     }
 
 }
