@@ -15,15 +15,17 @@ public class Main {
 
     public static void main(String[] args) {
 
+        System.out.println("Activity 0 - Information Management");
+        System.out.println("\033[3mA Java Program for Reading Data\033[0m\n"); // change niyo nalang hehe
+        System.out.println("Press enter to continue... ");
+        kbd.nextLine();
+
         int choice = 0;
-
-
         readDataSet();
-
 
         do {
 
-            System.out.println("Pili ka muna\n 1[FILTER]\n2 [SORT]\n3 [AGGREGATE FUNCTIONS]\n4 [EXIT]");
+            System.out.println("Select your option\n1 [FILTER]\n2 [SORT]\n3 [AGGREGATE FUNCTIONS]\n4 [EXIT]");
 
             choice = kbd.nextInt();
             switch (choice) {
@@ -39,11 +41,16 @@ public class Main {
                 case 3:
                     aggregateFunctions();
                     break;
+
+                case 4:
+                    System.out.println("Thank you for using our program!");
+                    System.exit(0);
                 default:
+
                     break;
 
             }
-        } while (choice != 4);
+        } while (choice != 5);
 
 
     }
@@ -119,16 +126,18 @@ public class Main {
                             case 1:
                                 HashMap<String, Integer> matFreq = getMaterialFrequency();
                                 for (Map.Entry<String, Integer> entry : matFreq.entrySet())
-                                    System.out.println(entry.getKey().equals("") ? "No Material" + " = " +
-                                            entry.getValue() : entry.getKey() + "=" + entry.getValue());
+                                    System.out.println(entry.getKey() + " = " + entry.getValue());
                                 pressEnter();
                                 break;
                             case 2:
                                 HashMap<String, Integer> pipeFreq = getPipeFrequency();
                                 for (Map.Entry<String, Integer> entry : pipeFreq.entrySet())
-                                    System.out.println(entry.getKey().equals("") ? "No Location" + " = " +
-                                            entry.getValue() : entry.getKey() + "=" + entry.getValue());
+                                    System.out.println(entry.getKey() + " = " + entry.getValue());
                                 pressEnter();
+                                break;
+
+                            case 3:
+                                aggregateFunctions();
                                 break;
                             default:
                                 break;
@@ -666,7 +675,6 @@ public class Main {
                             }
                         }
 
-
                     } while (choice != distinctV.size() + 1);
 
                     break;
@@ -862,6 +870,13 @@ public class Main {
     private static void showOwnershipChoices(List<rowData> list) {
         System.out.println("\t List of Ownerships");
         for (int i = 1; i <= list.size() + 1; i++) {
+
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Owner", i);
+                System.out.println();
+                continue;
+            }
+
             if (i == list.size() + 1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
@@ -873,12 +888,39 @@ public class Main {
 
     private static void showMaterialChoices(List<rowData> list) {
         System.out.println("\t List of Materials");
+
         for (int i = 1; i <= list.size() + 1; i++) {
+
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Material", i);
+                System.out.println();
+                continue;
+            }
+
             if (i == list.size() + 1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
             }
             System.out.printf("[%d] " + list.get(i - 1).getMaterial(), i);
+            System.out.println();
+        }
+    }
+
+    private static void showOAChoices(List<rowData> list) {
+        System.out.println("\t List of Operational Areas");
+        for (int i = 1; i <= list.size() + 1; i++) {
+
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Operational Area", i);
+                System.out.println();
+                continue;
+            }
+
+            if (i == list.size() + 1) {
+                System.out.printf("[%d] " + "Go Back\n", i);
+                continue;
+            }
+            System.out.printf("[%d] " + list.get(i - 1).getOperationalArea(), i);
             System.out.println();
         }
     }
@@ -897,17 +939,6 @@ public class Main {
         System.out.println("[4] Go Back");
     }
 
-    private static void showOAChoices(List<rowData> list) {
-        System.out.println("\t List of Operational Areas");
-        for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
-                System.out.printf("[%d] " + "Go Back\n", i);
-                continue;
-            }
-            System.out.printf("[%d] " + list.get(i - 1).getOperationalArea(), i);
-            System.out.println();
-        }
-    }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
