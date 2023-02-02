@@ -137,13 +137,13 @@ public class Main {
                             case 1:
                                 HashMap<String, Integer> matFreq = getMaterialFrequency();
                                 for (Map.Entry<String, Integer> entry: matFreq.entrySet())
-                                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                                    System.out.println((entry.getKey().equals("")? "No Material" + " = " + entry.getValue(): entry.getKey()) + " = " + entry.getValue());
                                 pressEnter();
                                 break;
                             case 2:
                                 HashMap<String, Integer> pipeFreq = getPipeFrequency();
                                 for (Map.Entry<String, Integer> entry: pipeFreq.entrySet())
-                                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                                    System.out.println(entry.getKey().equals("")? "No Location" + " = " + entry.getValue(): entry.getKey() + " = " + entry.getValue());
                                 pressEnter();
                                 break;
                             default:
@@ -888,6 +888,11 @@ public class Main {
     private static void showMaterialChoices(List<rowData> list) {
         System.out.println("\t List of Materials");
         for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Material", i);
+                System.out.println();
+                continue;
+            }
             if (i == list.size()+1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
