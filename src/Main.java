@@ -1,3 +1,14 @@
+/**
+ * AUTHORS: Abella, Jahn Crystan - 2224514
+ * David, Joshua Daniel - 2222551
+ * Decena, Alexcious Norlan - 2221089
+ * Molintas, Jonison Martel - 2211261
+ * Tarlit, Ariel Jr. - 2221621
+ * SUBMITTED TO: Mrs. Ma. Concepcion Clemente
+ * DATE: 2/2/2023
+ **/
+
+
 import java.io.*;
 import java.sql.SQLOutput;
 import java.util.*;
