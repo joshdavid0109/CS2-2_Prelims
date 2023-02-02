@@ -68,7 +68,6 @@ public class MainMenu {
                     System.exit(1);
 
 
-
             }
             break;
         } while (choiceMenu != 5);
@@ -84,7 +83,6 @@ public class MainMenu {
     }
 
 
-
     public static void showFilterColumnChoices() {
         System.out.println("FILTERING OF DATA\n");
 
@@ -94,7 +92,6 @@ public class MainMenu {
         System.out.println("[4] Back to Main Menu\n");
         System.out.println("Input your choice: ");
     }
-
 
 
     private static void filterDataAccordingtoColumns() {
@@ -175,7 +172,7 @@ public class MainMenu {
                         }
 
                         case 13 -> {
-                            System.out.println("dog");
+                            filterDataAccordingtoColumns();
                         }
                         default -> {
                         }
@@ -183,6 +180,7 @@ public class MainMenu {
 
                 } while (choice != distinctV.size() + 1);
                 break;
+
 
             case 2:
                 distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOperationalArea)).collect(Collectors.toList());
@@ -263,8 +261,7 @@ public class MainMenu {
                             System.out.println(result);
                         }
                         case 15 -> {
-                            printMenu();
-                            runMainMenu();
+                            filterDataAccordingtoColumns();
                         }
                         default -> {
                         }
@@ -342,7 +339,13 @@ public class MainMenu {
                             System.out.println(result);
                         }
 
-                        case 13 -> printMenu();
+                        case 13 -> {
+                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(12).getOwner())).toList();
+                            printHeaders();
+                            System.out.println(result);
+                        }
+
+                        case 14 -> filterDataAccordingtoColumns();
 
                     }
 
@@ -351,12 +354,21 @@ public class MainMenu {
                 break;
             case 4:
                 printMenu();
+                break;
         }
     }
+
 
     private static void showOAChoices(List<rowData> list) {
         System.out.println("\t List of Operational Areas");
         for (int i = 1; i <= list.size() + 1; i++) {
+
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Material", i);
+                System.out.println();
+                continue;
+            }
+
             if (i == list.size() + 1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
@@ -368,7 +380,15 @@ public class MainMenu {
 
     private static void showMaterialChoices(List<rowData> list) {
         System.out.println("\t List of Materials");
+
         for (int i = 1; i <= list.size() + 1; i++) {
+
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Material", i);
+                System.out.println();
+                continue;
+            }
+
             if (i == list.size() + 1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
@@ -381,6 +401,13 @@ public class MainMenu {
     private static void showOwnershipChoices(List<rowData> list) {
         System.out.println("\t List of Ownerships");
         for (int i = 1; i <= list.size() + 1; i++) {
+
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Material", i);
+                System.out.println();
+                continue;
+            }
+
             if (i == list.size() + 1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
@@ -415,74 +442,33 @@ public class MainMenu {
         );
     }
 
-    private static void metricSubMenu() {
-        System.out.println("[1] Depth (Up Stream)");
-        System.out.println("[2] Depth (Down Stream)");
-        System.out.println("[3] Height");
-        System.out.println("[4] Invert (Up Stream)");
-        System.out.println("[5] Invert (Down Stream)");
-        System.out.println("[6] Diameter");
-        System.out.println("[7] Pipe Slope");
-        System.out.println("[8] Shape Length");
-        System.out.println("[9] Go Back");
-    }
 
-    private static void sortSubMenu() {
-        System.out.println("[1] Sort according to date");
-        System.out.println("[2] Sort String Data");
-        System.out.println("[3] Sort Integers/Double Data");
-        System.out.println("[4] Go Back");
-    }
+    private static HashMap<String, Integer> getMaterialFrequency() {
+        List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).toList();
+        HashMap<String, Integer> hash = new HashMap<>();
 
-    private static void aggregateFunctions() {
-        List <Double> Averages = solveAverage();
-        System.out.println("AVERAGES");
-        for (double d: Averages) {
-            System.out.printf(" %.2f " + "", d);
+        for (int i = 0; i < distinctV.size(); i++) {
+            int finalI = i;
+            List<rowData> result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(finalI).getMaterial())).toList();
+            hash.put(distinctV.get(finalI).getMaterial(), result.size());
         }
-        System.out.println();
-        List <Double> Mins = getMin();
-      /*  getMax();
-        getSum();
-        getFrequency();*/
+
+        return hash;
     }
 
-    private static List<Double> getMin() {
-        List<Double> Mins = new ArrayList<>();
-        rowData minDUS = rowDataList.stream().min(Comparator.comparing(rowData::getDepthUS)).orElseThrow(NoSuchElementException::new);
-        double dus = (minDUS.getDepthUS().equals("") ? 0 : Double.parseDouble(minDUS.getDepthUS()));
-        Mins.add(dus);
+    private static HashMap<String, Integer> getPipeFrequency() {
+        List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOperationalArea)).toList();
+        HashMap<String, Integer> hash = new HashMap<>();
 
-        rowData minDDS = rowDataList.stream().min(Comparator.comparing(rowData::getDepthDS)).orElseThrow(NoSuchElementException::new);
-        double dds = (minDDS.getDepthDS().equals("") ? 0 : Double.parseDouble(minDDS.getDepthDS()));
-        Mins.add(dds);
+        for (int i = 0; i < distinctV.size(); i++) {
+            int finalI = i;
+            List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(finalI).getOperationalArea())).toList();
+            hash.put(distinctV.get(finalI).getOperationalArea(), result.size());
+        }
 
-        rowData height = rowDataList.stream().min(Comparator.comparing(rowData::getHeight)).orElseThrow(NoSuchElementException::new);
-        double h = (height.getHeight().equals("") ? 0 : Double.parseDouble(height.getHeight()));
-        Mins.add(h);
-
-        rowData iUS = rowDataList.stream().min(Comparator.comparing(rowData::getInvertUS)).orElseThrow(NoSuchElementException::new);
-        double invUS = (iUS.getInvertUS().equals("") ? 0 : Double.parseDouble(iUS.getInvertUS()));
-        Mins.add(invUS);
-
-        rowData iDS = rowDataList.stream().min(Comparator.comparing(rowData::getInvertDS)).orElseThrow(NoSuchElementException::new);
-        double invDS = (iDS.getInvertDS().equals("") ? 0 : Double.parseDouble(iDS.getInvertDS()));
-        Mins.add(invDS);
-
-        rowData dia = rowDataList.stream().min(Comparator.comparing(rowData::getDiameter)).orElseThrow(NoSuchElementException::new);
-        double d = (dia.getDiameter().equals("") ? 0 : Double.parseDouble(dia.getDiameter()));
-        Mins.add(d);
-
-        rowData psl = rowDataList.stream().min(Comparator.comparing(rowData::getpSlope)).orElseThrow(NoSuchElementException::new);
-        double slope = (psl.getpSlope().equals("") ? 0 : Double.parseDouble(psl.getpSlope()));
-        Mins.add(slope);
-
-        rowData shapel = rowDataList.stream().min(Comparator.comparing(rowData::getShapeLength)).orElseThrow(NoSuchElementException::new);
-        double sl = (shapel.getShapeLength().equals("") ? 0 : Double.parseDouble(shapel.getShapeLength()));
-        Mins.add(sl);
-
-        return Mins;
+        return hash;
     }
+
 
     private static List<Double> solveAverage() {
         double sumDUS = 0;
@@ -496,14 +482,14 @@ public class MainMenu {
         List<Double> averages = new ArrayList<>();
 
         for (rowData rd : rowDataList) {
-            sumDUS += rd.getDepthUS().equals("")? 0: Double.parseDouble(rd.getDepthUS());
-            sumDDS += rd.getDepthDS().equals("")?  0: Double.parseDouble(rd.getDepthDS());
-            sumHeight += rd.getHeight().equals("")? 0 : Double.parseDouble(rd.getHeight());
-            sumInvertUS += rd.getInvertUS().equals("")? 0:Double.parseDouble(rd.getInvertUS());
-            sumInvertDS += rd.getInvertDS().equals("")? 0: Double.parseDouble(rd.getInvertDS());
-            sumDiameter += rd.getDiameter().equals("")? 0:Double.parseDouble(rd.getDiameter());
-            sumPSlope += rd.getpSlope().equals("")? 0 :Double.parseDouble(rd.getpSlope());
-            sumShapeLength += rd.getShapeLength().equals("")? 0:Double.parseDouble(rd.getShapeLength());
+            sumDUS += rd.getDepthUS().equals("") ? 0 : Double.parseDouble(rd.getDepthUS());
+            sumDDS += rd.getDepthDS().equals("") ? 0 : Double.parseDouble(rd.getDepthDS());
+            sumHeight += rd.getHeight().equals("") ? 0 : Double.parseDouble(rd.getHeight());
+            sumInvertUS += rd.getInvertUS().equals("") ? 0 : Double.parseDouble(rd.getInvertUS());
+            sumInvertDS += rd.getInvertDS().equals("") ? 0 : Double.parseDouble(rd.getInvertDS());
+            sumDiameter += rd.getDiameter().equals("") ? 0 : Double.parseDouble(rd.getDiameter());
+            sumPSlope += rd.getpSlope().equals("") ? 0 : Double.parseDouble(rd.getpSlope());
+            sumShapeLength += rd.getShapeLength().equals("") ? 0 : Double.parseDouble(rd.getShapeLength());
         }
         averages.add(sumDUS / rowDataList.size());
         averages.add(sumDDS / rowDataList.size());
@@ -526,20 +512,125 @@ public class MainMenu {
         do {
             System.out.println("[1] Ascending ");
             System.out.println("[2] Descending");
+            System.out.println("[3] Go Back");
             x = kbd.nextInt();
             switch (x) {
                 case 1:
-                    x = ascendingOrder(choice,c);
+                    x = ascendingOrder(choice, c);
                     break;
                 case 2:
                     x = descendingOrder(choice, c);
                     break;
+
+                case 3:
+                    printMenu();
+                    break;
+
                 default:
                     break;
             }
 
-        } while (x != 4 );
+        } while (x != 4);
 
+    }
+
+    private static int ascendingOrder(int choice, int c) {
+        while (choice < 4) {
+            sortSubMenu();
+            choice = kbd.nextInt();
+            if (choice == 1) {
+                List<rowData> sortedDates;
+
+                printHeaders();
+                sortedDates = rowDataList.stream()
+                        .sorted(Comparator.comparing(rowData::getDate)).collect(Collectors.toList());
+                System.out.println(sortedDates.toString().replace(",", ""));
+                continue;
+            } else if (choice == 2) {
+                System.out.println("[1] Location");
+                System.out.println("[2] Operational Area");
+                System.out.println("[3] Go Back");
+                c = kbd.nextInt();
+                List<rowData> sortedNames;
+                switch (c) {
+                    case 1:
+                        sortedNames = rowDataList.stream()
+                                .sorted(Comparator.comparing(rowData::getLocation))
+                                .collect(Collectors.toList());
+                        System.out.println(sortedNames);
+                        break;
+                    case 2:
+                        sortedNames = rowDataList.stream()
+                                .sorted(Comparator.comparing(rowData::getOperationalArea))
+                                .collect(Collectors.toList());
+                        System.out.println(sortedNames);
+                        break;
+                    default:
+                        continue;
+                }
+            } else if (choice == 3) {
+                List<rowData> temp;
+                do {
+                    metricSubMenu();
+                    System.out.print("  Choice : ");
+                    c = kbd.nextInt();
+                    switch (c) {
+                        case 1 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 2 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 3 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 4 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 5 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 6 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 7 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        case 8 -> {
+                            printHeaders();
+                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength))).collect(Collectors.toList());
+                            System.out.println(temp.toString().replace(",", ""));
+                        }
+                        default -> {
+                        }
+                    }
+
+
+                } while (c != 9);
+
+
+            } else if (choice == 4) {
+                sortDataAccordingToColumns();
+            }
+            return kbd.nextInt();
+
+
+        }
+        return kbd.nextInt();
     }
 
     private static int descendingOrder(int choice, int c) {
@@ -547,7 +638,7 @@ public class MainMenu {
             sortSubMenu();
             System.out.print("Choice: ");
             choice = kbd.nextInt();
-            switch (choice){
+            switch (choice) {
                 case 1:
                     List<rowData> sortedDates;
 
@@ -646,110 +737,245 @@ public class MainMenu {
 
                     } while (c != 9);
                     break;
+
+                case 4:
+                    sortDataAccordingToColumns();
             }
-        } while (choice !=4);
+        } while (choice != 4);
         return choice;
     }
 
-    public static void pressEnter() {
-        System.out.println("\nPress Enter to Continue");
-        kbd.nextLine();
-        kbd.nextLine();
+    private static void metricSubMenu() {
+        System.out.println("[1] Depth (Up Stream)");
+        System.out.println("[2] Depth (Down Stream)");
+        System.out.println("[3] Height");
+        System.out.println("[4] Invert (Up Stream)");
+        System.out.println("[5] Invert (Down Stream)");
+        System.out.println("[6] Diameter");
+        System.out.println("[7] Pipe Slope");
+        System.out.println("[8] Shape Length");
+        System.out.println("[9] Go Back");
+    }
+
+    private static void sortSubMenu() {
+        System.out.println("[1] Sort according to date");
+        System.out.println("[2] Sort String Data");
+        System.out.println("[3] Sort Integers/Double Data");
+        System.out.println("[4] Go Back");
+    }
+
+    private static void functionsSubMenu() {
+        System.out.println("[1] Averages");
+        System.out.println("[2] Minimums");
+        System.out.println("[3] Maximums");
+        System.out.println("[4] Sums");
+        System.out.println("[5] Frequencies");
+        System.out.println("[6] Go Back");
+    }
+
+    private static void aggregateFunctions() {
+        int choice = 0;
+
+        do {
+            functionsSubMenu();
+            System.out.print("Input your choice:  ");
+            choice = kbd.nextInt();
+            switch (choice) {
+                // Averages
+                case 1:
+                    System.out.println("\t\t\t\t\t\t\t\t--------------------AVERAGES-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> Averages = solveAverage();
+                    for (double d : Averages) {
+                        System.out.printf("%-17.2f", d);
+                    }
+
+                    pressEnter();
+
+                    break;
+
+                // Min
+                case 2:
+
+                    System.out.println("\n\t\t\t\t\t\t\t\t--------------------MINIMUMS-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> Mins = getMin();
+                    for (double d : Mins) {
+                        System.out.printf("%-17.2f", d);
+                    }
+                    pressEnter();
+                    break;
+
+                // Max
+                case 3:
+                    System.out.println("\n\t\t\t\t\t\t\t\t--------------------MAXIMUMS-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> Maxs = getMax();
+                    for (double d : Maxs)
+                        System.out.printf("%-17.2f", d);
+                    pressEnter();
+                    break;
+
+                // Sums
+                case 4:
+                    System.out.println("\n\t\t\t\t\t\t\t\t--------------------SUMS-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> sums = getSum();
+                    for (double d : sums) {
+                        System.out.printf("%-17.2f", d);
+                    }
+                    System.out.println();
+                    pressEnter();
+                    break;
+
+                // Frequencies
+                case 5:
+                    int c = 0;
+                    do {
+                        System.out.println("[1] Frequency of Materials Used");
+                        System.out.println("[2] Frequency of pipes existing in each Operational Area");
+                        System.out.println("[3] Go Back");
+                        c = kbd.nextInt();
+                        switch (c) {
+                            case 1:
+                                HashMap<String, Integer> matFreq = getMaterialFrequency();
+                                for (Map.Entry<String, Integer> entry : matFreq.entrySet())
+                                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                                pressEnter();
+                                break;
+                            case 2:
+                                HashMap<String, Integer> pipeFreq = getPipeFrequency();
+                                for (Map.Entry<String, Integer> entry : pipeFreq.entrySet())
+                                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                                pressEnter();
+                                break;
+
+                            case 3:
+                                aggregateFunctions();
+                                break;
+                            default:
+                                break;
+                        }
+                    } while (c != 3);
+                    break;
+                case 6:
+                    printMenu();
+                default:
+                    break;
+            }
+        } while (choice != 7);
+    }
+
+    private static List<Double> getSum() {
+        double sumDUS = 0;
+        double sumDDS = 0;
+        double sumHeight = 0;
+        double sumInvertUS = 0;
+        double sumInvertDS = 0;
+        double sumDiameter = 0;
+        double sumPSlope = 0;
+        double sumShapeLength = 0;
+        List<Double> sumList = new ArrayList<>();
+
+        for (rowData rd : rowDataList) {
+            sumDUS += rd.getDepthUS().equals("") ? 0 : Double.parseDouble(rd.getDepthUS());
+            sumDDS += rd.getDepthDS().equals("") ? 0 : Double.parseDouble(rd.getDepthDS());
+            sumHeight += rd.getHeight().equals("") ? 0 : Double.parseDouble(rd.getHeight());
+            sumInvertUS += rd.getInvertUS().equals("") ? 0 : Double.parseDouble(rd.getInvertUS());
+            sumInvertDS += rd.getInvertDS().equals("") ? 0 : Double.parseDouble(rd.getInvertDS());
+            sumDiameter += rd.getDiameter().equals("") ? 0 : Double.parseDouble(rd.getDiameter());
+            sumPSlope += rd.getpSlope().equals("") ? 0 : Double.parseDouble(rd.getpSlope());
+            sumShapeLength += rd.getShapeLength().equals("") ? 0 : Double.parseDouble(rd.getShapeLength());
+        }
+
+        sumList.add(sumDUS);
+        sumList.add(sumDDS);
+        sumList.add(sumHeight);
+        sumList.add(sumInvertUS);
+        sumList.add(sumInvertDS);
+        sumList.add(sumDiameter);
+        sumList.add(sumPSlope);
+        sumList.add(sumShapeLength);
+        return sumList;
     }
 
 
-    private static int ascendingOrder(int choice, int c) {
-        while (choice < 4){
-            sortSubMenu();
-            choice = kbd.nextInt();
-            if (choice == 1) {
-                List<rowData> sortedDates;
+    private static List<Double> getMin() {
+        List<Double> Mins = new ArrayList<>();
+        rowData minDUS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDepthUS().equals("") ? 0 : Double.parseDouble(s.getDepthUS()))).orElseThrow(NoSuchElementException::new);
+        double dus = (minDUS.getDepthUS().equals("") ? 0 : Double.parseDouble(minDUS.getDepthUS()));
+        Mins.add(dus);
 
-                printHeaders();
-                sortedDates = rowDataList.stream()
-                        .sorted(Comparator.comparing(rowData::getDate)).collect(Collectors.toList());
-                System.out.println(sortedDates.toString().replace(",", ""));
-                continue;
-            } else if (choice == 2) {
-                System.out.println("[1] Location");
-                System.out.println("[2] Operational Area");
-                System.out.println("[3] Go Back");
-                c = kbd.nextInt();
-                List<rowData> sortedNames;
-                switch (c) {
-                    case 1:
-                        sortedNames = rowDataList.stream()
-                                .sorted(Comparator.comparing(rowData::getLocation))
-                                .collect(Collectors.toList());
-                        System.out.println(sortedNames);
-                        break;
-                    case 2:
-                        sortedNames = rowDataList.stream()
-                                .sorted(Comparator.comparing(rowData::getOperationalArea))
-                                .collect(Collectors.toList());
-                        System.out.println(sortedNames);
-                        break;
-                    default:
-                        continue;
-                }
-                continue;
-            } else if (choice == 3) {
-                List<rowData> temp;
-                do {
-                    metricSubMenu();
-                    System.out.print("  Choice : ");
-                    c = kbd.nextInt();
-                    switch (c) {
-                        case 1 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 2 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 3 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 4 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 5 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 6 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 7 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 8 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength))).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        default -> {
-                        }
-                    }
+        rowData minDDS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDepthDS().equals("") ? 0 : Double.parseDouble(s.getDepthDS()))).orElseThrow(NoSuchElementException::new);
+        double dds = (minDDS.getDepthDS().equals("") ? 0 : Double.parseDouble(minDDS.getDepthDS()));
+        Mins.add(dds);
 
+        rowData height = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getHeight().equals("") ? 0 : Double.parseDouble(s.getHeight()))).orElseThrow(NoSuchElementException::new);
+        double h = (height.getHeight().equals("") ? 0 : Double.parseDouble(height.getHeight()));
+        Mins.add(h);
 
-                } while (c != 9);
-            } else
-                return kbd.nextInt();
-        }
-        return kbd.nextInt();
+        rowData iUS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getInvertUS().equals("") ? 0 : Double.parseDouble(s.getInvertUS()))).orElseThrow(NoSuchElementException::new);
+        double invUS = (iUS.getInvertUS().equals("") ? 0 : Double.parseDouble(iUS.getInvertUS()));
+        Mins.add(invUS);
+
+        rowData iDS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getInvertDS().equals("") ? 0 : Double.parseDouble(s.getInvertDS()))).orElseThrow(NoSuchElementException::new);
+        double invDS = (iDS.getInvertDS().equals("") ? 0 : Double.parseDouble(iDS.getInvertDS()));
+        Mins.add(invDS);
+
+        rowData dia = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDiameter().equals("") ? 0 : Double.parseDouble(s.getDiameter()))).orElseThrow(NoSuchElementException::new);
+        double d = (dia.getDiameter().equals("") ? 0 : Double.parseDouble(dia.getDiameter()));
+        Mins.add(d);
+
+        rowData psl = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getpSlope().equals("") ? 0 : Double.parseDouble(s.getpSlope()))).orElseThrow(NoSuchElementException::new);
+        double slope = (psl.getpSlope().equals("") ? 0 : Double.parseDouble(psl.getpSlope()));
+        Mins.add(slope);
+
+        rowData shapel = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getShapeLength().equals("") ? 0 : Double.parseDouble(s.getShapeLength()))).orElseThrow(NoSuchElementException::new);
+        double sl = (shapel.getShapeLength().equals("") ? 0 : Double.parseDouble(shapel.getShapeLength()));
+        Mins.add(sl);
+
+        return Mins;
+    }
+
+    private static List<Double> getMax() {
+        List<Double> Maxs = new ArrayList<>();
+        rowData maxDUS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDepthUS()).equals("") ? 0 : Double.parseDouble(s.getDepthUS()))).orElseThrow(NoSuchElementException::new);
+        double dus = (maxDUS.getDepthUS().equals("") ? 0 : Double.parseDouble(maxDUS.getDepthUS()));
+        Maxs.add(dus);
+
+        rowData maxDDS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDepthDS().equals("") ? 0 : Double.parseDouble(s.getDepthDS())))).orElseThrow(NoSuchElementException::new);
+        double dds = (maxDDS.getDepthDS().equals("") ? 0 : Double.parseDouble(maxDDS.getDepthDS()));
+        Maxs.add(dds);
+
+        rowData height = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getHeight().equals("")) ? 0 : Double.parseDouble(s.getHeight()))).orElseThrow(NoSuchElementException::new);
+        double h = (height.getHeight().equals("") ? 0 : Double.parseDouble(height.getHeight()));
+        Maxs.add(h);
+
+        rowData iUS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getInvertUS().equals("")) ? 0 : Double.parseDouble(s.getInvertUS()))).orElseThrow(NoSuchElementException::new);
+        double invUS = (iUS.getInvertUS().equals("") ? 0 : Double.parseDouble(iUS.getInvertUS()));
+        Maxs.add(invUS);
+
+        rowData iDS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getInvertDS().equals("")) ? 0 : Double.parseDouble(s.getInvertDS()))).orElseThrow(NoSuchElementException::new);
+        double invDS = (iDS.getInvertDS().equals("") ? 0 : Double.parseDouble(iDS.getInvertDS()));
+        Maxs.add(invDS);
+
+        rowData dia = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDiameter().equals("")) ? 0 : Double.parseDouble(s.getDiameter()))).orElseThrow(NoSuchElementException::new);
+        double d = (dia.getDiameter().equals("") ? 0 : Double.parseDouble(dia.getDiameter()));
+        Maxs.add(d);
+
+        rowData psl = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getpSlope().equals("")) ? 0 : Double.parseDouble(s.getpSlope()))).orElseThrow(NoSuchElementException::new);
+        double slope = (psl.getpSlope().equals("") ? 0 : Double.parseDouble(psl.getpSlope()));
+        Maxs.add(slope);
+
+        rowData shapel = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getShapeLength().equals("")) ? 0 : Double.parseDouble(s.getShapeLength()))).orElseThrow(NoSuchElementException::new);
+        double sl = (shapel.getShapeLength().equals("") ? 0 : Double.parseDouble(shapel.getShapeLength()));
+        Maxs.add(sl);
+
+        return Maxs;
     }
 
 
@@ -759,21 +985,25 @@ public class MainMenu {
         int i = 1;
         try {
             BufferedReader br = new BufferedReader(new FileReader("stormwater-pipes_3.csv"));
+
             // Reading the file line by line and stopping when it reaches the 1000th line.
-            while (((line = br.readLine()) != null) && i <= 1000) {
+            while (((line = br.readLine()) != null)) {
                 String[] rowData = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 String columnHeader = "location";
 
                 if (temp == -1) {
                     findColumn(rowData, columnHeader);
-                    continue;
+                    temp++;
+                } else {
+                    // Adding a new rowData object to the rowDataList.
+                    rowDataList.add(new rowData(rowData[0], rowData[1], rowData[2], rowData[3],
+                            rowData[4], rowData[5], rowData[6], rowData[7], rowData[8], rowData[9],
+                            rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
+                            rowData[16], rowData[17], rowData[18]));
                 }
 
-                rowDataList.add(new rowData(rowData[0], rowData[1], rowData[2], rowData[3],
-                        rowData[4], rowData[5], rowData[6], rowData[7], rowData[8], rowData[9],
-                        rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
-                        rowData[16], rowData[17], rowData[18]));
             }
+
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
@@ -788,6 +1018,12 @@ public class MainMenu {
             }
         }
         return x;
+    }
+
+    public static void pressEnter() {
+        System.out.println("\nPress Enter to Continue");
+        kbd.nextLine();
+        kbd.nextLine();
     }
 
     public static void main(String[] args) {
