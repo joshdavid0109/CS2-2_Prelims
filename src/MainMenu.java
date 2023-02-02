@@ -59,7 +59,6 @@ public class MainMenu {
                     break;
 
                 case 4:
-                    getMin();
                     aggregateFunctions();
                     break;
 
@@ -579,7 +578,8 @@ public class MainMenu {
                 List<rowData> temp;
                 do {
                     metricSubMenu();
-
+                    System.out.print("  Choice : ");
+                    c = kbd.nextInt();
                     switch (c) {
                         case 1 -> {
                             printHeaders();
@@ -625,8 +625,7 @@ public class MainMenu {
                         }
                     }
 
-                    System.out.print(" mamili ka muna : ");
-                    c = kbd.nextInt();
+
                 } while (c != 9);
             } else
                 return kbd.nextInt();
@@ -673,7 +672,8 @@ public class MainMenu {
                 List<rowData> temp;
                 do {
                     metricSubMenu();
-
+                    System.out.print("  Choice : ");
+                    c = kbd.nextInt();
                     switch (c) {
                         case 1 -> {
                             printHeaders();
@@ -719,8 +719,7 @@ public class MainMenu {
                         }
                     }
 
-                    System.out.print(" mamili ka muna : ");
-                    c = kbd.nextInt();
+
                 } while (c != 9);
             } else
                 return kbd.nextInt();

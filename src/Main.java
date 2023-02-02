@@ -22,6 +22,7 @@ public class Main {
 
 
         do {
+
             System.out.println("Pili ka muna 1[FILTER], 2 [SORT], 3 [AGGREGATE FUNCTIONS] 3 [EXIT]");
 
             choice = kbd.nextInt()  ;
@@ -62,59 +63,198 @@ public class Main {
     }
 
     private static void aggregateFunctions() {
-        List <Double> Averages = solveAverage();
-        System.out.println("\t\t\t\t\t--------------------AVERAGES-------------------");
+        int choice = 0;
 
-        /**
-         * pweds na ganto lahat pagprint label nalangs
-         */
-        System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US","Depth DS", "Height",
+        do {
+            functionsSubMenu();
+            choice = kbd.nextInt();
+            switch (choice) {
+                // Averages
+                case 1:
+                    System.out.println("\t\t\t\t\t\t\t\t--------------------AVERAGES-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
                             "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
-        for (double d: Averages) {
-            System.out.printf("%-17.2f", d);
-        }
-        System.out.println();
-        List <Double> Mins = getMin();
-      /*  getMax();
-        getSum();
-        getFrequency();*/
+                    List<Double> Averages = solveAverage();
+                    for (double d : Averages) {
+                        System.out.printf("%-17.2f", d);
+                    }
+                    break;
+
+
+                // Min
+                case 2:
+
+                    System.out.println("\n\t\t\t\t\t\t\t\t--------------------MINIMUMS-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> Mins = getMin();
+                    for (double d : Mins) {
+                        System.out.printf("%-17.2f", d);
+                    }
+                    break;
+
+                // Max
+                case 3:
+                    System.out.println("\n\t\t\t\t\t\t\t\t--------------------MAXIMUMS-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> Maxs = getMax();
+                    for (double d : Maxs)
+                        System.out.printf("%-17.2f", d);
+                    break;
+
+                // Sums
+                case 4:
+                    System.out.println("\n\t\t\t\t\t\t\t\t--------------------SUMS-------------------");
+                    System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US", "Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
+                    List<Double> sums = getSum();
+                    for (double d : sums) {
+                        System.out.printf("%-17.2f", d);
+                    }
+                    System.out.println();
+                    break;
+
+                // Frequencies
+                case 5:
+                    HashMap <String, Integer> freqs = getFrequency();
+                    System.out.println(freqs);
+                    break;
+                default:
+                    break;
+            }
+        } while (choice != 6    );
     }
+
+    private static void functionsSubMenu() {
+        System.out.println("[1] Averages");
+        System.out.println("[2] Minimums");
+        System.out.println("[3] Maximums");
+        System.out.println("[4] Sums");
+        System.out.println("[5] Frequencies");
+        System.out.println("[6] Go Back");
+    }
+
+    private static HashMap<String, Integer> getFrequency() {
+        List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).toList();
+        HashMap<String, Integer> hash = new HashMap<>();
+
+        for (int i = 0; i < distinctV.size(); i++) {
+            int finalI = i;
+            List<rowData> result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(finalI).getMaterial())).toList();
+            hash.put(distinctV.get(finalI).getMaterial(), result.size() );
+        }
+
+        return hash;
+    }
+
+
+    private static List<Double> getSum() {
+        double sumDUS = 0;
+        double sumDDS = 0;
+        double sumHeight = 0;
+        double sumInvertUS = 0;
+        double sumInvertDS = 0;
+        double sumDiameter = 0;
+        double sumPSlope = 0;
+        double sumShapeLength = 0;
+        List<Double> sumList = new ArrayList<>();
+
+        for (rowData rd : rowDataList) {
+            sumDUS += rd.getDepthUS().equals("")? 0: Double.parseDouble(rd.getDepthUS());
+            sumDDS += rd.getDepthDS().equals("")?  0: Double.parseDouble(rd.getDepthDS());
+            sumHeight += rd.getHeight().equals("")? 0 : Double.parseDouble(rd.getHeight());
+            sumInvertUS += rd.getInvertUS().equals("")? 0:Double.parseDouble(rd.getInvertUS());
+            sumInvertDS += rd.getInvertDS().equals("")? 0: Double.parseDouble(rd.getInvertDS());
+            sumDiameter += rd.getDiameter().equals("")? 0:Double.parseDouble(rd.getDiameter());
+            sumPSlope += rd.getpSlope().equals("")? 0 :Double.parseDouble(rd.getpSlope());
+            sumShapeLength += rd.getShapeLength().equals("")? 0:Double.parseDouble(rd.getShapeLength());
+        }
+
+        sumList.add(sumDUS);
+        sumList.add(sumDDS);
+        sumList.add(sumHeight);
+        sumList.add(sumInvertUS);
+        sumList.add(sumInvertDS);
+        sumList.add(sumDiameter);
+        sumList.add(sumPSlope);
+        sumList.add(sumShapeLength);
+        return sumList;
+    }
+
 
     private static List<Double> getMin() {
         List<Double> Mins = new ArrayList<>();
-        rowData minDUS = rowDataList.stream().min(Comparator.comparing(rowData::getDepthUS)).orElseThrow(NoSuchElementException::new);
+        rowData minDUS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDepthUS().equals("")? 0: Double.parseDouble(s.getDepthUS()))).orElseThrow(NoSuchElementException::new);
         double dus = (minDUS.getDepthUS().equals("") ? 0 : Double.parseDouble(minDUS.getDepthUS()));
         Mins.add(dus);
 
-        rowData minDDS = rowDataList.stream().min(Comparator.comparing(rowData::getDepthDS)).orElseThrow(NoSuchElementException::new);
+        rowData minDDS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDepthDS().equals("")? 0: Double.parseDouble(s.getDepthDS()))).orElseThrow(NoSuchElementException::new);
         double dds = (minDDS.getDepthDS().equals("") ? 0 : Double.parseDouble(minDDS.getDepthDS()));
         Mins.add(dds);
 
-        rowData height = rowDataList.stream().min(Comparator.comparing(rowData::getHeight)).orElseThrow(NoSuchElementException::new);
+        rowData height = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getHeight().equals("")? 0: Double.parseDouble(s.getHeight()))).orElseThrow(NoSuchElementException::new);
         double h = (height.getHeight().equals("") ? 0 : Double.parseDouble(height.getHeight()));
         Mins.add(h);
 
-        rowData iUS = rowDataList.stream().min(Comparator.comparing(rowData::getInvertUS)).orElseThrow(NoSuchElementException::new);
+        rowData iUS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getInvertUS().equals("")? 0: Double.parseDouble(s.getInvertUS()))).orElseThrow(NoSuchElementException::new);
         double invUS = (iUS.getInvertUS().equals("") ? 0 : Double.parseDouble(iUS.getInvertUS()));
         Mins.add(invUS);
 
-        rowData iDS = rowDataList.stream().min(Comparator.comparing(rowData::getInvertDS)).orElseThrow(NoSuchElementException::new);
+        rowData iDS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getInvertDS().equals("")? 0: Double.parseDouble(s.getInvertDS()))).orElseThrow(NoSuchElementException::new);
         double invDS = (iDS.getInvertDS().equals("") ? 0 : Double.parseDouble(iDS.getInvertDS()));
         Mins.add(invDS);
 
-        rowData dia = rowDataList.stream().min(Comparator.comparing(rowData::getDiameter)).orElseThrow(NoSuchElementException::new);
+        rowData dia = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDiameter().equals("")? 0: Double.parseDouble(s.getDiameter()))).orElseThrow(NoSuchElementException::new);
         double d = (dia.getDiameter().equals("") ? 0 : Double.parseDouble(dia.getDiameter()));
         Mins.add(d);
 
-        rowData psl = rowDataList.stream().min(Comparator.comparing(rowData::getpSlope)).orElseThrow(NoSuchElementException::new);
+        rowData psl = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getpSlope().equals("")? 0: Double.parseDouble(s.getpSlope()))).orElseThrow(NoSuchElementException::new);
         double slope = (psl.getpSlope().equals("") ? 0 : Double.parseDouble(psl.getpSlope()));
         Mins.add(slope);
 
-        rowData shapel = rowDataList.stream().min(Comparator.comparing(rowData::getShapeLength)).orElseThrow(NoSuchElementException::new);
+        rowData shapel = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getShapeLength().equals("")? 0: Double.parseDouble(s.getShapeLength()))).orElseThrow(NoSuchElementException::new);
         double sl = (shapel.getShapeLength().equals("") ? 0 : Double.parseDouble(shapel.getShapeLength()));
         Mins.add(sl);
 
         return Mins;
+    }
+
+    private static List<Double> getMax() {
+        List<Double> Maxs = new ArrayList<>();
+        rowData maxDUS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDepthUS()).equals("")? 0: Double.parseDouble(s.getDepthUS()))).orElseThrow(NoSuchElementException::new);
+        double dus = (maxDUS.getDepthUS().equals("") ? 0 : Double.parseDouble(maxDUS.getDepthUS()));
+        Maxs.add(dus);
+
+        rowData maxDDS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDepthDS().equals("")? 0: Double.parseDouble(s.getDepthDS())))).orElseThrow(NoSuchElementException::new);
+        double dds = (maxDDS.getDepthDS().equals("") ? 0 : Double.parseDouble(maxDDS.getDepthDS()));
+        Maxs.add(dds);
+
+        rowData height = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getHeight().equals(""))? 0 :Double.parseDouble(s.getHeight()))).orElseThrow(NoSuchElementException::new);
+        double h = (height.getHeight().equals("") ? 0 : Double.parseDouble(height.getHeight()));
+        Maxs.add(h);
+
+        rowData iUS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getInvertUS().equals(""))? 0 :Double.parseDouble(s.getInvertUS()))).orElseThrow(NoSuchElementException::new);
+        double invUS = (iUS.getInvertUS().equals("") ? 0 : Double.parseDouble(iUS.getInvertUS()));
+        Maxs.add(invUS);
+
+        rowData iDS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getInvertDS().equals(""))? 0 :Double.parseDouble(s.getInvertDS()))).orElseThrow(NoSuchElementException::new);
+        double invDS = (iDS.getInvertDS().equals("") ? 0 : Double.parseDouble(iDS.getInvertDS()));
+        Maxs.add(invDS);
+
+        rowData dia = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDiameter().equals(""))? 0 :Double.parseDouble(s.getDiameter()))).orElseThrow(NoSuchElementException::new);
+        double d = (dia.getDiameter().equals("") ? 0 : Double.parseDouble(dia.getDiameter()));
+        Maxs.add(d);
+
+        rowData psl = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getpSlope().equals(""))? 0 :Double.parseDouble(s.getpSlope()))).orElseThrow(NoSuchElementException::new);
+        double slope = (psl.getpSlope().equals("") ? 0 : Double.parseDouble(psl.getpSlope()));
+        Maxs.add(slope);
+
+        rowData shapel = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getShapeLength().equals(""))? 0 :Double.parseDouble(s.getShapeLength()))).orElseThrow(NoSuchElementException::new);
+        double sl = (shapel.getShapeLength().equals("") ? 0 : Double.parseDouble(shapel.getShapeLength()));
+        Maxs.add(sl);
+
+        return Maxs;
     }
 
     private static List<Double> solveAverage() {
@@ -198,13 +338,13 @@ public class Main {
                         sortedNames = rowDataList.stream()
                                 .sorted(Comparator.comparing(rowData::getLocation).reversed())
                                 .collect(Collectors.toList());
-                        System.out.println(sortedNames);
+                        System.out.println(sortedNames.toString().replace(",", ""));
                         break;
                     case 2:
                         sortedNames = rowDataList.stream()
                                 .sorted(Comparator.comparing(rowData::getOperationalArea).reversed())
                                 .collect(Collectors.toList());
-                        System.out.println(sortedNames);
+                        System.out.println(sortedNames.toString().replace(",", ""));
                         break;
                     default:
                         continue;
@@ -214,54 +354,54 @@ public class Main {
                 List<rowData> temp;
                 do {
                     metricSubMenu();
-
+                    System.out.print(" mamili ka muna : ");
+                    c = kbd.nextInt();
                     switch (c) {
                         case 1 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 2 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 3 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 4 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 5 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 6 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 7 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         case 8 -> {
                             printHeaders();
                             temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp);
+                            System.out.println(temp.toString().replace(",", ""));
                         }
                         default -> {
                         }
                     }
 
-                    System.out.print(" mamili ka muna : ");
-                    c = kbd.nextInt();
+
                 } while (c != 9);
             } else
                 return kbd.nextInt();
@@ -311,13 +451,13 @@ public class Main {
                         sortedNames = rowDataList.stream()
                                 .sorted(Comparator.comparing(rowData::getLocation))
                                 .collect(Collectors.toList());
-                        System.out.println(sortedNames);
+                        System.out.println(sortedNames.toString().replace(",", ""));
                         break;
                     case 2:
                         sortedNames = rowDataList.stream()
                                 .sorted(Comparator.comparing(rowData::getOperationalArea))
                                 .collect(Collectors.toList());
-                        System.out.println(sortedNames);
+                        System.out.println(sortedNames.toString().replace(",", ""));
                         break;
                     default:
                         continue;
@@ -395,6 +535,8 @@ public class Main {
                 distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).collect(Collectors.toList());
                 do {
                     showMaterialChoices(distinctV);
+                    System.out.print("\nchoice"); // pang stop ng loop
+                    choice = kbd.nextInt();
                     switch (choice) {
                         case 1 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(0).getMaterial())).toList();
@@ -460,8 +602,7 @@ public class Main {
                         }
                     }
 
-                    System.out.print("\nchoice"); // pang stop ng loop
-                    choice = kbd.nextInt();
+
                 } while (choice != distinctV.size() +1);
 
                 break;
@@ -693,8 +834,8 @@ public class Main {
             BufferedReader br = new BufferedReader(new FileReader("stormwater-pipes_3.csv"));
 
             // Reading the file line by line and stopping when it reaches the 1000th line.
-            while (((line = br.readLine()) != null) && i <= 1000) {
-                String [] rowData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+            while (((line = br.readLine()) != null)) {
+                String [] rowData = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 String columnHeader = "location";
 
                 if (temp == -1) {

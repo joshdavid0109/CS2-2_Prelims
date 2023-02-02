@@ -1,0 +1,64 @@
+package pexer1;
+
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+public class PreExercise1 {
+    static Scanner kbd = new Scanner(System.in);
+
+
+    public static void main(String[] args) {
+        char choice;
+        String hostName;
+        int programCount = 0;
+        int numberOfHost;
+
+
+        do {
+            programCount++;
+
+            System.out.println("Host " + programCount);
+            System.out.println("Type IP address / Hostname: ");
+            hostName = kbd.nextLine();
+
+            System.out.println("Input number of hosts/IP: ");
+            numberOfHost = kbd.nextInt();
+
+            System.out.println("Host name");
+            System.out.println("IP Address");
+
+            while (numberOfHost != 0) {
+
+                System.out.println("\nGetting ip address...");
+
+                for (int i = 1; i <= numberOfHost; i++) {
+                    try {
+                        InetAddress getHostName = InetAddress.getByName(hostName);
+//                        InetAddress[] getIpAddress = InetAddress.g(hostName);
+//                        System.out.println("Test" + getIpAddress.toString());
+
+                        System.out.println("IP address of host is \n " + getHostName);
+                    } catch (UnknownHostException e) {
+                        System.out.println("Host does not exist!");
+                        e.printStackTrace();
+                    } catch (SecurityException e) {
+                        System.out.println("Security manager exists, but does not allow the operation!");
+                        e.printStackTrace();
+                    }
+                }
+                numberOfHost = 0; // initialize numberOfHost back to 0
+            }
+            System.out.println("Search another [y/n]? ");
+            choice = kbd.next().charAt(0);
+
+        } while (choice == 'y');
+
+        if (choice == 'n') {
+            System.out.println("Thank you for using my program!");
+            System.exit(0);
+        }
+    }
+}
+
