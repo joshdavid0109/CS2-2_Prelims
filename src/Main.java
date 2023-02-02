@@ -63,9 +63,15 @@ public class Main {
 
     private static void aggregateFunctions() {
         List <Double> Averages = solveAverage();
-        System.out.println("AVERAGES");
+        System.out.println("\t\t\t\t\t--------------------AVERAGES-------------------");
+
+        /**
+         * pweds na ganto lahat pagprint label nalangs
+         */
+        System.out.printf("%-17s%-17s%-17s%-17s%-17s%-17s%-17s%-17s%n", "Depth US","Depth DS", "Height",
+                            "Invert US", "Invert DS", "Diameter", "PSlope", "Shape Length");
         for (double d: Averages) {
-            System.out.printf(" %.2f " + "", d);
+            System.out.printf("%-17.2f", d);
         }
         System.out.println();
         List <Double> Mins = getMin();
@@ -685,9 +691,8 @@ public class Main {
         int i = 1;
         try {
             BufferedReader br = new BufferedReader(new FileReader("stormwater-pipes_3.csv"));
+
             // Reading the file line by line and stopping when it reaches the 1000th line.
-
-
             while (((line = br.readLine()) != null) && i <= 1000) {
                 String [] rowData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 String columnHeader = "location";
@@ -697,6 +702,7 @@ public class Main {
                     continue;
                 }
 
+                // Adding a new rowData object to the rowDataList.
                 rowDataList.add(new rowData(rowData[0], rowData[1], rowData[2], rowData[3],
                         rowData[4], rowData[5], rowData[6], rowData[7], rowData[8], rowData[9],
                         rowData[10], rowData[11], rowData[12], rowData[13], rowData[14], rowData[15],
