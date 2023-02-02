@@ -514,7 +514,7 @@ public class Main {
                         .sorted(Comparator.comparing(rowData::getDate)).collect(Collectors.toList());
                 System.out.println(sortedDates.toString().replace(",", ""));
             } else if (choice == 2) {
-                System.out.println("---- SORT OF STRING DATA OPTIONS ----");
+                System.out.println("---- SORTING OF STRING DATA OPTIONS ----");
                 System.out.println("[1] Location");
                 System.out.println("[2] Operational Area");
                 System.out.println("[3] Go Back");
