@@ -67,6 +67,7 @@ public class Main {
 
         do {
             functionsSubMenu();
+            System.out.print("Choice: ");
             choice = kbd.nextInt();
             switch (choice) {
                 // Averages
@@ -78,8 +79,10 @@ public class Main {
                     for (double d : Averages) {
                         System.out.printf("%-17.2f", d);
                     }
-                    break;
 
+                    pressEnter();
+
+                    break;
 
                 // Min
                 case 2:
@@ -91,6 +94,7 @@ public class Main {
                     for (double d : Mins) {
                         System.out.printf("%-17.2f", d);
                     }
+                    pressEnter();
                     break;
 
                 // Max
@@ -101,6 +105,7 @@ public class Main {
                     List<Double> Maxs = getMax();
                     for (double d : Maxs)
                         System.out.printf("%-17.2f", d);
+                    pressEnter();
                     break;
 
                 // Sums
@@ -113,17 +118,52 @@ public class Main {
                         System.out.printf("%-17.2f", d);
                     }
                     System.out.println();
+                    pressEnter();
                     break;
 
                 // Frequencies
                 case 5:
-                    HashMap <String, Integer> freqs = getFrequency();
-                    System.out.println(freqs);
+                    int c = 0;
+                    do {
+                        System.out.println("[1] Frequency of Materials Used");
+                        System.out.println("[2] Frequency of pipes existing in each Operational Area");
+                        System.out.println("[3] Go Back");
+                        c = kbd.nextInt();
+                        switch (c) {
+                            case 1:
+                                HashMap<String, Integer> matFreq = getMaterialFrequency();
+                                for (Map.Entry<String, Integer> entry: matFreq.entrySet())
+                                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                                pressEnter();
+                                break;
+                            case 2:
+                                HashMap<String, Integer> pipeFreq = getPipeFrequency();
+                                for (Map.Entry<String, Integer> entry: pipeFreq.entrySet())
+                                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                                pressEnter();
+                                break;
+                            default:
+                                break;
+                        }
+                    } while (c != 3);
                     break;
                 default:
                     break;
             }
         } while (choice != 6    );
+    }
+
+    private static HashMap<String, Integer> getPipeFrequency() {
+        List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOperationalArea)).toList();
+        HashMap<String, Integer> hash = new HashMap<>();
+
+        for (int i = 0; i < distinctV.size(); i++) {
+            int finalI = i;
+            List<rowData> result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(finalI).getOperationalArea())).toList();
+            hash.put(distinctV.get(finalI).getOperationalArea(), result.size() );
+        }
+
+        return hash;
     }
 
     private static void functionsSubMenu() {
@@ -135,7 +175,7 @@ public class Main {
         System.out.println("[6] Go Back");
     }
 
-    private static HashMap<String, Integer> getFrequency() {
+    private static HashMap<String, Integer> getMaterialFrequency() {
         List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).toList();
         HashMap<String, Integer> hash = new HashMap<>();
 
@@ -299,6 +339,7 @@ public class Main {
         do {
             System.out.println("[1] Ascending ");
             System.out.println("[2] Descending");
+            System.out.println("[3] Go Back");
             x = kbd.nextInt();
             switch (x) {
                 case 1:
@@ -311,102 +352,117 @@ public class Main {
                     break;
             }
 
-        } while (x != 4 );
+        } while (x < 3 );
 
     }
 
     private static int descendingOrder(int choice, int c) {
-        while (choice < 4){
+        do {
             sortSubMenu();
+            System.out.print("Choice: ");
             choice = kbd.nextInt();
-            if (choice == 1) {
-                List<rowData> sortedDates;
+            switch (choice){
+                case 1:
+                    List<rowData> sortedDates;
 
-                printHeaders();
-                sortedDates = rowDataList.stream()
-                        .sorted(Comparator.comparing(rowData::getDate).reversed()).collect(Collectors.toList());
-                System.out.println(sortedDates.toString().replace(",", ""));
-                continue;
-            } else if (choice == 2) {
-                System.out.println("[1] Location");
-                System.out.println("[2] Operational Area");
-                System.out.println("[3] Go Back");
-                c = kbd.nextInt();
-                List<rowData> sortedNames;
-                switch (c) {
-                    case 1:
-                        sortedNames = rowDataList.stream()
-                                .sorted(Comparator.comparing(rowData::getLocation).reversed())
-                                .collect(Collectors.toList());
-                        System.out.println(sortedNames.toString().replace(",", ""));
-                        break;
-                    case 2:
-                        sortedNames = rowDataList.stream()
-                                .sorted(Comparator.comparing(rowData::getOperationalArea).reversed())
-                                .collect(Collectors.toList());
-                        System.out.println(sortedNames.toString().replace(",", ""));
-                        break;
-                    default:
-                        continue;
-                }
-                continue;
-            } else if (choice == 3) {
-                List<rowData> temp;
-                do {
-                    metricSubMenu();
-                    System.out.print(" mamili ka muna : ");
+                    printHeaders();
+                    sortedDates = rowDataList.stream()
+                            .sorted(Comparator.comparing(rowData::getDate).reversed()).collect(Collectors.toList());
+                    System.out.println(sortedDates.toString().replace(",", ""));
+                    pressEnter();
+                    break;
+                case 2:
+                    System.out.println("Columns that contain string data");
+                    System.out.println("[1] Location");
+                    System.out.println("[2] Operational Area");
+                    System.out.println("[3] Go Back");
+                    System.out.print("Choice: ");
                     c = kbd.nextInt();
+                    List<rowData> sortedNames;
                     switch (c) {
-                        case 1 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 2 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 3 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 4 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 5 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 6 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 7 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        case 8 -> {
-                            printHeaders();
-                            temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength)).reversed()).collect(Collectors.toList());
-                            System.out.println(temp.toString().replace(",", ""));
-                        }
-                        default -> {
-                        }
+                        case 1:
+                            sortedNames = rowDataList.stream()
+                                    .sorted(Comparator.comparing(rowData::getLocation).reversed())
+                                    .collect(Collectors.toList());
+                            System.out.println(sortedNames.toString().replace(",", ""));
+                            pressEnter();
+                            break;
+                        case 2:
+                            sortedNames = rowDataList.stream()
+                                    .sorted(Comparator.comparing(rowData::getOperationalArea).reversed())
+                                    .collect(Collectors.toList());
+                            System.out.println(sortedNames.toString().replace(",", ""));
+                            pressEnter();
+                            break;
+                        default:
+                            continue;
                     }
+                    break;
+                case 3:
+                    List<rowData> temp;
+                    do {
+                        metricSubMenu();
+                        System.out.print(" Choice: ");
+                        pressEnter();
+                        c = kbd.nextInt();
+                        switch (c) {
+                            case 1 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthUS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 2 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDepthDS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 3 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getHeight)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 4 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertUS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 5 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getInvertDS)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 6 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getDiameter)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 7 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getpSlope)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            case 8 -> {
+                                printHeaders();
+                                temp = rowDataList.stream().sorted(Comparator.comparing((rowData::getShapeLength)).reversed()).collect(Collectors.toList());
+                                System.out.println(temp.toString().replace(",", ""));
+                                pressEnter();
+                            }
+                            default -> {
+                            }
+                        }
 
-
-                } while (c != 9);
-            } else
-                return kbd.nextInt();
-        }
-        return kbd.nextInt();
+                    } while (c != 9);
+                break;
+            }
+        } while (choice !=4);
+        return choice;
     }
 
     private static void metricSubMenu() {
@@ -431,6 +487,7 @@ public class Main {
     private static int ascendingOrder(int choice, int c) {
         while (choice < 4){
             sortSubMenu();
+            System.out.print("Choice:");
             choice = kbd.nextInt();
             if (choice == 1) {
                 List<rowData> sortedDates;
@@ -444,6 +501,7 @@ public class Main {
                 System.out.println("[1] Location");
                 System.out.println("[2] Operational Area");
                 System.out.println("[3] Go Back");
+                System.out.print("Choice: ");
                 c = kbd.nextInt();
                 List<rowData> sortedNames;
                 switch (c) {
@@ -467,7 +525,8 @@ public class Main {
                 List<rowData> temp;
                 do {
                     metricSubMenu();
-
+                    System.out.print("Choice: ");
+                    c = kbd.nextInt();
                     switch (c) {
                         case 1 -> {
                             printHeaders();
@@ -513,8 +572,6 @@ public class Main {
                         }
                     }
 
-                    System.out.print(" mamili ka muna : ");
-                    c = kbd.nextInt();
                 } while (c != 9);
             } else
                 return kbd.nextInt();
@@ -523,11 +580,12 @@ public class Main {
     }
 
     private static void filterDataAccordingtoColumns() {
-        System.out.println("FILTERING DATA");
+        System.out.println("FILTERING OF DATA BASED ON COLUMN HEADERS");
         int c = 0;
         List<rowData> distinctV;
         List<rowData> result;
         showFilterColumnChoices();
+        System.out.print("Choice: ");
         c = kbd.nextInt();
         int choice = 0;
         switch (c) {
@@ -535,68 +593,80 @@ public class Main {
                 distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).collect(Collectors.toList());
                 do {
                     showMaterialChoices(distinctV);
-                    System.out.print("\nchoice"); // pang stop ng loop
+                    System.out.print("Choice: "); // pang stop ng loop
                     choice = kbd.nextInt();
                     switch (choice) {
                         case 1 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(0).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 2 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(1).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 3 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(2).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 4 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(3).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 5 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(4).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 6 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(5).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 7 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(6).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 8 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(7).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 9 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(8).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 10 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(9).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 11 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(10).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 12 -> {
                             result = rowDataList.stream().filter(s -> s.getMaterial().equals(distinctV.get(11).getMaterial())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         default -> {
                         }
@@ -611,83 +681,96 @@ public class Main {
 
                 do {
                     showOAChoices(distinctV);
+                    System.out.println("Choice :"); // pang stop ng loop
+                    choice = kbd.nextInt();
                     switch (choice) {
                         case 1 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(0).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 2 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(1).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 3 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(2).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 4 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(3).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 5 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(4).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 6 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(5).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 7 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(6).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 8 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(7).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 9 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(8).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 10 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(9).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 11 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(10).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 12 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(11).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 13 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(12).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         case 14 -> {
                             result = rowDataList.stream().filter(s -> s.getOperationalArea().equals(distinctV.get(13).getOperationalArea())).toList();
                             printHeaders();
                             System.out.println(result.toString().replace(",", ""));
+                            pressEnter();
                         }
                         default -> {
                         }
                     }
-
-                    System.out.print("\nchoice"); // pang stop ng loop
-                    choice = kbd.nextInt();
                 } while (choice != distinctV.size() +1);
                 break;
 
@@ -695,74 +778,85 @@ public class Main {
                 distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOwner)).collect(Collectors.toList());
                do {
                     showOwnershipChoices(distinctV);
+                   System.out.println("Choice :");
+                   choice = kbd.nextInt();
                    switch (choice) {
                        case 1 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(0).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 2 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(1).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 3 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(2).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 4 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(3).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 5 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(4).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 6 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(5).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 7 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(6).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 8 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(7).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 9 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(8).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 10 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(9).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 11 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(10).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        case 12 -> {
                            result = rowDataList.stream().filter(s -> s.getOwner().equals(distinctV.get(11).getOwner())).toList();
                            printHeaders();
                            System.out.println(result.toString().replace(",", ""));
+                           pressEnter();
                        }
                        default -> {
                        }
                    }
-
-                   System.out.print("\nchoice"); // pang stop ng loop
-                    choice = kbd.nextInt();
-                } while (choice != distinctV.size() +1);
+                } while (choice != distinctV.size());
                 break;
 
             default:
@@ -772,8 +866,8 @@ public class Main {
 
     private static void showOwnershipChoices(List<rowData> list) {
         System.out.println("\t List of Ownerships");
-        for (int i = 1; i <= list.size() + 1; i++) {
-            if (i == list.size() + 1) {
+        for (int i = 1; i <= list.size(); i++) {
+            if (i == list.size()) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
             }
@@ -823,6 +917,12 @@ public class Main {
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
+    }
+
+    public static void pressEnter() {
+        System.out.println("\nPress Enter to Continue");
+        kbd.nextLine();
+        kbd.nextLine();
     }
 
 

@@ -86,7 +86,7 @@ public class MainMenu {
 
 
     public static void showFilterColumnChoices() {
-        System.out.println("FILTERING DATA\n");
+        System.out.println("FILTERING OF DATA\n");
 
         System.out.println("[1] Material");
         System.out.println("[2] Operational Area");
