@@ -1,8 +1,8 @@
 /**
  * AUTHORS: Abella, Jahn Crystan - 2224514
  * David, Joshua Daniel - 2222551
- * Decena, Alexcious Norlan -
- * Molintas, Jonison Martel -
+ * Decena, Alexcious Norlan - 2221089
+ * Molintas, Jonison Martel - 2211261
  * Tarlit, Ariel Jr. - 2221621
  * SUBMITTED TO: Mrs. Ma. Concepcion Clemente
  * DATE: 2/2/2023
@@ -22,6 +22,9 @@ public class Main {
     private static Scanner kbd = new Scanner(System.in);
     private static List<rowData> rowDataList = new ArrayList<>();
 
+    /**
+     * The function runs a loop that prints the menu, takes the user's choice, and then runs the corresponding function
+     */
     public static void run() {
         readDataSet();
         int choiceMenu;
@@ -67,6 +70,9 @@ public class Main {
     }
 
     // Case [1]
+    /**
+     * This function prints the data in the rowDataList ArrayList, and then waits for the user to press enter twice
+     */
     private static void printData() {
         System.out.println(rowDataList.toString().replace(",", ""));
         System.out.println("Press enter to continue...");
@@ -75,6 +81,16 @@ public class Main {
 
     }
 
+    /**
+     * This function is used to display the submenu for the aggregate functions and then calls the appropriate function to
+     * perform the desired operation
+     *
+     * 1. AVERAGES
+     * 2. MINIMUMS
+     * 3. MAXIMUMS
+     * 4. SUMS
+     * 5. FREQUENCIES
+     */
     private static void aggregateFunctions() {
         int choice = 0;
 
@@ -166,6 +182,13 @@ public class Main {
         } while (choice != 6    );
     }
 
+    /**
+     * It takes a list of objects, filters out the distinct values of a specific property, then counts the number of times
+     * each distinct value appears in the list
+     *
+     * @return A HashMap with the key being the operational area and the value being the frequency of that operational
+     * area.
+     */
     private static HashMap<String, Integer> getPipeFrequency() {
         List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOperationalArea)).toList();
         HashMap<String, Integer> hash = new HashMap<>();
@@ -189,6 +212,12 @@ public class Main {
         System.out.println("[6] Go Back");
     }
 
+    /**
+     * It takes a list of objects, filters out the distinct values of a specific property of the object, then counts the
+     * number of times each distinct value appears in the list
+     *
+     * @return A HashMap of the material and the frequency of that material.
+     */
     private static HashMap<String, Integer> getMaterialFrequency() {
         List<rowData> distinctV = rowDataList.stream().filter(distinctByKey(rowData::getMaterial)).toList();
         HashMap<String, Integer> hash = new HashMap<>();
@@ -203,6 +232,11 @@ public class Main {
     }
 
 
+    /**
+     * This function is used to calculate the sum of each column in the table
+     *
+     * @return A list of doubles.
+     */
     private static List<Double> getSum() {
         double sumDUS = 0;
         double sumDDS = 0;
@@ -237,6 +271,11 @@ public class Main {
     }
 
 
+    /**
+     * It returns a list of the minimum values of each attribute in the rowDataList
+     *
+     * @return A list of the minimum values for each attribute.
+     */
     private static List<Double> getMin() {
         List<Double> Mins = new ArrayList<>();
         rowData minDUS = rowDataList.stream().min(Comparator.comparingDouble(s -> s.getDepthUS().equals("")? 0: Double.parseDouble(s.getDepthUS()))).orElseThrow(NoSuchElementException::new);
@@ -274,6 +313,12 @@ public class Main {
         return Mins;
     }
 
+    /**
+     * It returns a list of doubles that are the maximum values of the following: DepthUS, DepthDS, Height, InvertUS,
+     * InvertDS, Diameter, pSlope, ShapeLength
+     *
+     * @return A list of doubles.
+     */
     private static List<Double> getMax() {
         List<Double> Maxs = new ArrayList<>();
         rowData maxDUS = rowDataList.stream().max(Comparator.comparingDouble(s -> (s.getDepthUS()).equals("")? 0: Double.parseDouble(s.getDepthUS()))).orElseThrow(NoSuchElementException::new);
@@ -311,6 +356,12 @@ public class Main {
         return Maxs;
     }
 
+    /**
+     * This function takes the data from the rowDataList and sums up the values for each column, then divides by the number
+     * of rows to get the average
+     *
+     * @return A list of doubles.
+     */
     private static List<Double> solveAverage() {
         double sumDUS = 0;
         double sumDDS = 0;
@@ -346,6 +397,9 @@ public class Main {
 
 
     // Sort in alphabetical order
+    /**
+     * It sorts the data according to the user's choice
+     */
     private static void sortDataAccordingToColumns() {
         System.out.println("\n---- SORTING OF DATA ----");
         int choice = 0, c = 0, x = 0;
@@ -393,6 +447,13 @@ public class Main {
         System.out.println("[4] Go Back");
     }
 
+    /**
+     * This function is a sub-menu that allows the user to sort the data in descending order by date, location, operational
+     * area, or any of the 8 metrics
+     *
+     * @param choice the user's choice from the main menu
+     * @param c is the choice for the sub menu
+     */
     private static void descendingOrder(int choice, int c) {
         do {
             sortSubMenu();
@@ -401,7 +462,6 @@ public class Main {
             switch (choice){
                 case 1:
                     List<rowData> sortedDates;
-
                     printHeaders();
                     sortedDates = rowDataList.stream()
                             .sorted(Comparator.comparing(rowData::getDate).reversed()).collect(Collectors.toList());
@@ -501,6 +561,12 @@ public class Main {
         } while (choice !=4);
     }
 
+    /**
+     * This function is used to sort the data in ascending order
+     *
+     * @param choice the user's choice for the sorting sub-menu
+     * @param c choice
+     */
     private static void ascendingOrder(int choice, int c) {
         do {
             sortSubMenu();
@@ -594,6 +660,9 @@ public class Main {
         } while (choice != 4);
     }
 
+    /**
+     * This function filters the data according to the column headers
+     */
     private static void filterDataAccordingtoColumns() {
         System.out.println("FILTERING OF DATA BASED ON COLUMN HEADERS");
         int c = 0;
@@ -795,7 +864,7 @@ public class Main {
                     distinctV = rowDataList.stream().filter(distinctByKey(rowData::getOwner)).collect(Collectors.toList());
                     do {
                         showOwnershipChoices(distinctV);
-                        System.out.println("Input your choice:");
+                        System.out.println("Input your choice: ");
                         choice = kbd.nextInt();
                         switch (choice) {
                             case 1 -> {
@@ -882,9 +951,19 @@ public class Main {
         } while (c != 4);
     }
 
+    /**
+     * It prints out a list of ownerships that the user can choose from
+     *
+     * @param list The list of rowData objects that are being displayed.
+     */
     private static void showOwnershipChoices(List<rowData> list) {
         System.out.println("\t List of Ownerships");
         for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Ownership", i);
+                System.out.println();
+                continue;
+            }
             if (i == list.size()+1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
@@ -894,6 +973,11 @@ public class Main {
         }
     }
 
+    /**
+     * It prints out a list of materials that the user can choose from
+     *
+     * @param list The list of materials that the user can choose from.
+     */
     private static void showMaterialChoices(List<rowData> list) {
         System.out.println("\t List of Materials");
         for (int i = 1; i <= list.size() + 1; i++) {
@@ -926,9 +1010,19 @@ public class Main {
         System.out.println("[4] Go Back");
     }
 
+    /**
+     * This function prints out the list of operational areas that the user can choose from
+     *
+     * @param list The list of rowData objects that contain the operational areas.
+     */
     private static void showOAChoices(List<rowData> list) {
         System.out.println("\t List of Operational Areas");
         for (int i = 1; i <= list.size() + 1; i++) {
+            if (i == list.size()) {
+                System.out.printf("[%d] " + "No Operational Area", i);
+                System.out.println();
+                continue;
+            }
             if (i == list.size()+1) {
                 System.out.printf("[%d] " + "Go Back\n", i);
                 continue;
@@ -938,6 +1032,13 @@ public class Main {
         }
     }
 
+    /**
+     * Given a function that extracts a key from a value, return a predicate that returns true if the key hasn't been seen
+     * before.
+     *
+     * @param keyExtractor A function that extracts a key from a given element.
+     * @return A Predicate that will return true if the keyExtractor.apply(t) has not been seen before.
+     */
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
@@ -950,6 +1051,9 @@ public class Main {
     }
 
 
+    /**
+     * It reads the CSV file line by line and adds each line to a list of rowData objects
+     */
     private static void readDataSet() {
         String line = "";
         int temp = -1;
@@ -980,6 +1084,12 @@ public class Main {
         }
     }
 
+    /**
+     * It takes a row of data and a column header, and returns the column number of the column header
+     *
+     * @param rowData The row of data that you want to search through.
+     * @param cHeader The column header you want to find
+     */
     public static void findColumn(String[] rowData, String cHeader) {
         int x = 0;
         for (int i = 1; i <= rowData.length; i++) {
@@ -989,5 +1099,4 @@ public class Main {
             }
         }
     }
-
 }
